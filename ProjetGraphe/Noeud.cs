@@ -10,5 +10,13 @@ namespace ProjetGraphe
     {
         private int noeud_id;
         private Noeud[,] relations;
+
+
+
+        public Noeud(int noeud_id, Noeud[,] relations)
+        {
+            this.noeud_id = noeud_id;
+            this.relations = relations;
+        }
     }
 }
