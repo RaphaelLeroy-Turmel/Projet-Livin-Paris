@@ -1,0 +1,15 @@
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\bin\Debug\net8.0\ProjetGraphe.exe
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\bin\Debug\net8.0\ProjetGraphe.deps.json
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\bin\Debug\net8.0\ProjetGraphe.runtimeconfig.json
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\bin\Debug\net8.0\ProjetGraphe.dll
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\bin\Debug\net8.0\ProjetGraphe.pdb
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.AssemblyInfoInputs.cache
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.AssemblyInfo.cs
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.csproj.CoreCompileInputs.cache
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.sourcelink.json
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.dll
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\refint\ProjetGraphe.dll
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.pdb
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ProjetGraphe.genruntimeconfig.cache
+C:\Users\rarap\source\repos\ProjetGraphe\ProjetGraphe\obj\Debug\net8.0\ref\ProjetGraphe.dll
