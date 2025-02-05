@@ -15,6 +15,14 @@ namespace ProjetGraphe
         private int taille = 0;/// nombre d'arêtes
         private int ordre = 0;/// nombre de sommets/noeuds
         private Noeud[] graphe = new Noeud[0];
+
+
+        public Noeud[] GetGraphe
+        {
+            get { return graphe; }
+            set { graphe = value; }
+        }
+        
         public Graphe(string nom,string filename) 
         {
             this.nom_de_graphe = nom;
@@ -25,11 +33,11 @@ namespace ProjetGraphe
             bool p = false;
             string[] relation=new string[0];
             int b = 0;
+            string line = sr.ReadLine();
             while (sr!=null)
             {
                 
-                string line = sr.ReadLine();
-                if (line == null) break;
+                
                 if (line[0] != '%')
                 {
                     p = true;
@@ -48,14 +56,17 @@ namespace ProjetGraphe
                     int A = Convert.ToInt32(relation[0]); /// noeud A
                     int B = Convert.ToInt32(relation[1]); /// noeud B
                     this.matrix[A-1 , B-1 ] = 1;
+                    Console.WriteLine($"a :{A} , B :{B} ");
                     this.matrix[B-1 , A-1] = 1;
                     taille++;
                 }
 
-
+                line = sr.ReadLine();
             }
+            CréerGraphe();
         
         }
+        
 
         public void CréerGraphe()
         {
@@ -81,6 +92,28 @@ namespace ProjetGraphe
 
                 
         }
+        public void ListedAdjacence()
+        {
+
+            for(int i =0; i < graphe.Length; i++)
+            {
+                if (graphe[i]!= null &&  graphe[i].Relations != null && graphe[i].Relations.Count != 0)
+                {
+                    Console.WriteLine("Relations du noeud " + (i+1) + " : ");
+                    for (int j = 0; j < graphe[i].Relations.Count; j++)
+                    {
+                        Console.Write(  (graphe[i].Relations[j].Noeud_Id +1) + " ; ");
+
+
+
+
+                    }
+                    Console.WriteLine();
+                }
+            }
+
+        }
+        
 
         public void AddRelationMatrix(int noeudA , int noeudB)
         {
@@ -88,6 +121,40 @@ namespace ProjetGraphe
 
             this.matrix[noeudB-1, noeudA-1] = 1;
             this.matrix[noeudA-1, noeudB-1] = 1;
+
+        }
+        public void ParcoursEnLargeur(int NodeNumber)
+        {
+            Console.WriteLine("Parcours en largeur du graphe ");
+            bool p = true;
+            Queue<Noeud> File = new Queue<Noeud> ();
+            List<int> NodeIsExplored = new List<int>();
+            File.Enqueue(graphe[NodeNumber]);
+            while (p)
+            {
+                int count = 0;
+                 NodeNumber = (File.Dequeue()).Noeud_Id;
+                Console.WriteLine("Noeud n°" + (NodeNumber+1));
+                
+                while (count < this.graphe[NodeNumber].Relations.Count)
+                {
+
+                    if (!NodeIsExplored.Contains(count))
+                    {
+                        File.Enqueue(graphe[count]);
+                        NodeIsExplored.Add(count);
+                    }
+                    count++;
+                   
+                }
+                if(File.Count == 0)
+                {
+                    p = false;
+                }
+
+            }
+            Console.WriteLine(" end ");
+            
 
         }
 
@@ -146,7 +213,9 @@ namespace ProjetGraphe
             Console.WriteLine($"Ci dessus la matrice du graphe :{nom_de_graphe} de taille {taille} et d'ordre {ordre}.");
             Console.WriteLine();
         }/// Affichage dans la console de la matrice d'adjacence
-
+        
 
     }
+
+    
 }
