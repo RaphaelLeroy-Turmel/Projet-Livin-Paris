@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -15,7 +16,7 @@ namespace ProjetGraphe
         private int taille = 0;/// nombre d'arêtes
         private int ordre = 0;/// nombre de sommets/noeuds
         private Noeud[] graphe = new Noeud[0];
-
+        
 
         public Noeud[] GetGraphe
         {
@@ -30,47 +31,43 @@ namespace ProjetGraphe
             
             StreamReader sr = new StreamReader(this.filename);
             sr.ReadLine();
-            bool p = false;
-            string[] relation=new string[0];
+            string[] relation = new string[0];
             int b = 0;
             string line = sr.ReadLine();
-            while (sr!=null)
-            {
-                
-                
-                if (line[0] != '%')
-                {
-                    p = true;
+            while (line!=null)
+            {              
+                if (line.Length > 0 && line[0] != '%')
+                {                   
                     b++;
                 }
-                if( p & b == 1)
+                if(b == 1)
                 {
                     relation = line.Split(' ');
                     this.ordre = Convert.ToInt32(relation[0]);
                     graphe = new Noeud[ordre];
                     matrix = new int[ordre, ordre];/// on sait que la matrice est carré et symétrique car les relations entre les membres sont réciproques
                 }
-                if (p & (b>1))
+                if (b>1)
                 {
                     relation = line.Split(' ');
                     int A = Convert.ToInt32(relation[0]); /// noeud A
                     int B = Convert.ToInt32(relation[1]); /// noeud B
                     this.matrix[A-1 , B-1 ] = 1;
-                    Console.WriteLine($"a :{A} , B :{B} ");
-                    this.matrix[B-1 , A-1] = 1;
+                    Console.WriteLine($"A :{A} , B :{B} ");
+                    this.matrix[(B-1) , (A-1)] = 1;
                     taille++;
                 }
 
                 line = sr.ReadLine();
             }
             CréerGraphe();
-        
+            sr.Close();
         }
         
 
         public void CréerGraphe()
         {
-            this.graphe = new Noeud[ordre];
+            
             for(int i=0 ; i < matrix.GetLength(0) ; i++)
             {
                 Noeud X = new Noeud(i);///on créer un noeud n°i
@@ -123,41 +120,67 @@ namespace ProjetGraphe
             this.matrix[noeudA-1, noeudB-1] = 1;
 
         }
-        public void ParcoursEnLargeur(int NodeNumber)
+        public void ParcoursEnLargeur(Noeud ActualNode)
         {
-            Console.WriteLine("Parcours en largeur du graphe ");
-            bool p = true;
+            Console.WriteLine("Parcours en largeur d'abord du graphe ");
             Queue<Noeud> File = new Queue<Noeud> ();
-            List<int> NodeIsExplored = new List<int>();
-            File.Enqueue(graphe[NodeNumber]);
-            while (p)
+            List<int> IdNodeIsExplored = new List<int>();
+
+            File.Enqueue(graphe[ActualNode.Noeud_Id]);
+            int count = 0;
+            while (File.Count != 0)
             {
-                int count = 0;
-                 NodeNumber = (File.Dequeue()).Noeud_Id;
-                Console.WriteLine("Noeud n°" + (NodeNumber+1));
-                
-                while (count < this.graphe[NodeNumber].Relations.Count)
-                {
+                ActualNode= (File.Dequeue());
+                Console.WriteLine("Noeud n°" + ((ActualNode.Noeud_Id)+1));
 
-                    if (!NodeIsExplored.Contains(count))
+                foreach (Noeud NoeudVoisin in ActualNode.Relations) 
+                {
+                    if(!IdNodeIsExplored.Contains(NoeudVoisin.Noeud_Id))
                     {
-                        File.Enqueue(graphe[count]);
-                        NodeIsExplored.Add(count);
+                        File.Enqueue(NoeudVoisin);
+                        IdNodeIsExplored.Add(NoeudVoisin.Noeud_Id);
                     }
-                    count++;
-                   
-                }
-                if(File.Count == 0)
-                {
-                    p = false;
-                }
-
+                    if (IdNodeIsExplored.Contains(NoeudVoisin.Noeud_Id))
+                    {
+                        count++;
+                    }
+                
+                
+                }             
             }
+            if (IdNodeIsExplored.Count == this.ordre) Console.WriteLine($"Le graphe {nom_de_graphe} est connexe");
+            if (IdNodeIsExplored.Count < this.ordre) Console.WriteLine($"Le graphe {nom_de_graphe} n'est pas connexe");
+            if (count > 0) Console.WriteLine($"Le graphe contient des cycles");
             Console.WriteLine(" end ");
             
 
         }
 
+        public void ParcoursEnProfondeur (Noeud ActualNode)
+        {
+            Console.WriteLine("Parcours en profondeur d'abord du graphe ");
+            Stack<Noeud> Pile = new Stack<Noeud>();
+            Pile.Push(ActualNode);
+            List<int> IdNodeIsExplored = new List<int>();
+            while (Pile != null && Pile.Count >0)
+            {
+                Console.WriteLine("Noeud n°" + ((ActualNode.Noeud_Id) + 1));
+                IdNodeIsExplored.Add(ActualNode.Noeud_Id);
+                foreach (Noeud Node in ActualNode.Relations)
+                {
+                    if (!IdNodeIsExplored.Contains(Node.Noeud_Id))
+                    {
+                        Pile.Push(Node);
+                    }
+                }
+                    ActualNode = Pile.Pop();
+                
+            }
+        }
+
+        
+        
+        
         public void MatrixtoString()
         {
             
