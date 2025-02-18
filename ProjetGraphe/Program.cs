@@ -8,7 +8,7 @@
             Graphe Karaté = new Graphe("Karaté", "soc-karate.mtx");
             Karaté.MatrixtoString();
             Karaté.ListedAdjacence();
-            //Karaté.ParcoursEnLargeur(Karaté.GetGraphe[0]);
+            Karaté.ParcoursEnLargeur(Karaté.GetGraphe[0]);
             Karaté.ParcoursEnProfondeur(Karaté.GetGraphe[0]);
             
 

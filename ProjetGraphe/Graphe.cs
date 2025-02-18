@@ -121,7 +121,9 @@ namespace ProjetGraphe
 
         }
         public void ParcoursEnLargeur(Noeud ActualNode)
-        {
+        /// méthode itérative de parcours
+        ///Actual Node est le noeud actuel ou en est l'algorithme de parcours il commence par le noeud renseigné par l'utiliisateur ( j'ai commencé au noeud 1)
+        {///J'utilise une File (propriété FIFO nécéssaire pour ce type de parcours)
             Console.WriteLine("Parcours en largeur d'abord du graphe ");
             Queue<Noeud> File = new Queue<Noeud> ();
             List<int> IdNodeIsExplored = new List<int>();
@@ -156,8 +158,9 @@ namespace ProjetGraphe
 
         }
 
-        public void ParcoursEnProfondeur (Noeud ActualNode)
-        {
+        public void ParcoursEnProfondeur (Noeud ActualNode)/// méthode itérative de parcours
+        {///Actual Node est le noeud actuel ou en est l'algorithme de parcours il commence par le noeud renseigné par l'utiliisateur ( j'ai commencé au noeud 1)
+            ///J'utilise une Pile (propriété FILO nécéssaire pour ce type de parcours)
             Console.WriteLine("Parcours en profondeur d'abord du graphe ");
             Stack<Noeud> Pile = new Stack<Noeud>();
             Pile.Push(ActualNode);
@@ -168,13 +171,13 @@ namespace ProjetGraphe
                 IdNodeIsExplored.Add(ActualNode.Noeud_Id);
                 foreach (Noeud Node in ActualNode.Relations)
                 {
-                    if (!IdNodeIsExplored.Contains(Node.Noeud_Id))
+                    if (!IdNodeIsExplored.Contains(Node.Noeud_Id) && !Pile.Contains(Node))
                     {
                         Pile.Push(Node);
                     }
                 }
-                    ActualNode = Pile.Pop();
-                
+                ActualNode = Pile.Pop();               
+
             }
         }
 
