@@ -15,6 +15,7 @@
             //Karaté.AddRelationMatrix(1, 10);
             //Karaté.AddRelationMatrix(2, 2);
             //Karaté.MatrixtoString();
+            //bonjour
         }
     }
 }
