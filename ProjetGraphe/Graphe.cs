@@ -23,6 +23,13 @@ namespace ProjetGraphe
             get { return graphe; }
             set { graphe = value; }
         }
+
+        public int[,] Matrix
+        {
+            get { return matrix; }
+            set { matrix = value; }
+        }
+        
         
         public Graphe(string nom,string filename) 
         {

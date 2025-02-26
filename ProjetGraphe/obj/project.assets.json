@@ -1,11 +1,275 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "GraphSharp/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "QuickGraph": "3.6.61119.7",
+          "WPFExtensions": "(, )"
+        },
+        "compile": {
+          "lib/net40/GraphSharp.Controls.dll": {},
+          "lib/net40/GraphSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net40/GraphSharp.Controls.dll": {},
+          "lib/net40/GraphSharp.dll": {}
+        }
+      },
+      "QuickGraph/3.6.61119.7": {
+        "type": "package",
+        "compile": {
+          "lib/net4/QuickGraph.Data.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Graphviz.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Serialization.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.dll": {
+            "related": ".Data.XML;.Graphviz.XML;.Serialization.XML;.XML"
+          }
+        },
+        "runtime": {
+          "lib/net4/QuickGraph.Data.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Graphviz.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.Serialization.dll": {
+            "related": ".XML"
+          },
+          "lib/net4/QuickGraph.dll": {
+            "related": ".Data.XML;.Graphviz.XML;.Serialization.XML;.XML"
+          }
+        }
+      },
+      "SkiaSharp/3.116.1": {
+        "type": "package",
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "3.116.1",
+          "SkiaSharp.NativeAssets.macOS": "3.116.1"
+        },
+        "compile": {
+          "ref/net8.0/SkiaSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0/SkiaSharp.dll": {
+            "related": ".pdb"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.macOS/3.116.1": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/_._": {}
+        },
+        "runtime": {
+          "lib/net8.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Win32/3.116.1": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/_._": {}
+        },
+        "runtime": {
+          "lib/net8.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/libSkiaSharp.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "WPFExtensions/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/WPFExtensions.dll": {}
+        },
+        "runtime": {
+          "lib/WPFExtensions.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "GraphSharp/1.1.0": {
+      "sha512": "fythJ3o5H2Y2hhv4xQ2uzHhcp54aEMQ95Pk+SJfWO02Z02WNWVYloQzERKRJ9uZ7/gRNr8werKhhIj25frxlgA==",
+      "type": "package",
+      "path": "graphsharp/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "graphsharp.1.1.0.nupkg.sha512",
+        "graphsharp.nuspec",
+        "lib/net40/GraphSharp.Controls.dll",
+        "lib/net40/GraphSharp.dll"
+      ]
+    },
+    "QuickGraph/3.6.61119.7": {
+      "sha512": "crtYNiFcYFtYbmbEfdYsdGw5M3923OO5ZZD25K+WeLPgTp/q4oq3U/FVrbaOK5+Jg8UJDmoZ6sqAVion4RgXCA==",
+      "type": "package",
+      "path": "quickgraph/3.6.61119.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net4/CodeContracts/QuickGraph.Contracts.dll",
+        "lib/net4/CodeContracts/QuickGraph.Data.Contracts.dll",
+        "lib/net4/CodeContracts/QuickGraph.Graphviz.Contracts.dll",
+        "lib/net4/CodeContracts/QuickGraph.Serialization.Contracts.dll",
+        "lib/net4/QuickGraph.Data.XML",
+        "lib/net4/QuickGraph.Data.dll",
+        "lib/net4/QuickGraph.Graphviz.XML",
+        "lib/net4/QuickGraph.Graphviz.dll",
+        "lib/net4/QuickGraph.Serialization.XML",
+        "lib/net4/QuickGraph.Serialization.dll",
+        "lib/net4/QuickGraph.XML",
+        "lib/net4/QuickGraph.dll",
+        "quickgraph.3.6.61119.7.nupkg.sha512",
+        "quickgraph.nuspec"
+      ]
+    },
+    "SkiaSharp/3.116.1": {
+      "sha512": "DNDwbRjP+aMo27dV2h/uHCVTcWubWWxHnPLiePNyl24f4Pv43mQ8AQQeseOrKR+J3AOCEs6t0sUjo0aa3j3RWQ==",
+      "type": "package",
+      "path": "skiasharp/3.116.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "icon.png",
+        "interactive-extensions/dotnet/SkiaSharp.DotNet.Interactive.dll",
+        "lib/net462/SkiaSharp.dll",
+        "lib/net462/SkiaSharp.pdb",
+        "lib/net6.0/SkiaSharp.dll",
+        "lib/net6.0/SkiaSharp.pdb",
+        "lib/net8.0-android34.0/SkiaSharp.dll",
+        "lib/net8.0-android34.0/SkiaSharp.pdb",
+        "lib/net8.0-android34.0/SkiaSharp.xml",
+        "lib/net8.0-ios17.0/SkiaSharp.dll",
+        "lib/net8.0-ios17.0/SkiaSharp.pdb",
+        "lib/net8.0-maccatalyst17.0/SkiaSharp.dll",
+        "lib/net8.0-maccatalyst17.0/SkiaSharp.pdb",
+        "lib/net8.0-macos14.0/SkiaSharp.dll",
+        "lib/net8.0-macos14.0/SkiaSharp.pdb",
+        "lib/net8.0-tizen7.0/SkiaSharp.dll",
+        "lib/net8.0-tizen7.0/SkiaSharp.pdb",
+        "lib/net8.0-tvos17.0/SkiaSharp.dll",
+        "lib/net8.0-tvos17.0/SkiaSharp.pdb",
+        "lib/net8.0-windows10.0.19041/SkiaSharp.dll",
+        "lib/net8.0-windows10.0.19041/SkiaSharp.pdb",
+        "lib/net8.0/SkiaSharp.dll",
+        "lib/net8.0/SkiaSharp.pdb",
+        "lib/netstandard2.0/SkiaSharp.dll",
+        "lib/netstandard2.0/SkiaSharp.pdb",
+        "lib/netstandard2.1/SkiaSharp.dll",
+        "lib/netstandard2.1/SkiaSharp.pdb",
+        "ref/net462/SkiaSharp.dll",
+        "ref/net6.0/SkiaSharp.dll",
+        "ref/net8.0-android34.0/SkiaSharp.dll",
+        "ref/net8.0-ios17.0/SkiaSharp.dll",
+        "ref/net8.0-maccatalyst17.0/SkiaSharp.dll",
+        "ref/net8.0-macos14.0/SkiaSharp.dll",
+        "ref/net8.0-tizen7.0/SkiaSharp.dll",
+        "ref/net8.0-tvos17.0/SkiaSharp.dll",
+        "ref/net8.0-windows10.0.19041/SkiaSharp.dll",
+        "ref/net8.0/SkiaSharp.dll",
+        "ref/netstandard2.0/SkiaSharp.dll",
+        "ref/netstandard2.1/SkiaSharp.dll",
+        "skiasharp.3.116.1.nupkg.sha512",
+        "skiasharp.nuspec"
+      ]
+    },
+    "SkiaSharp.NativeAssets.macOS/3.116.1": {
+      "sha512": "3KPvpKysDmEMt0NnAZPX5U6KFk0LmG/72/IjAIJemIksIZ0Tjs9pGpr3L+zboVCv1MLVoJLKl3nJDXUG6Jda6A==",
+      "type": "package",
+      "path": "skiasharp.nativeassets.macos/3.116.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "THIRD-PARTY-NOTICES.txt",
+        "buildTransitive/net462/SkiaSharp.NativeAssets.macOS.targets",
+        "buildTransitive/net8.0-macos14.0/SkiaSharp.NativeAssets.macOS.targets",
+        "icon.png",
+        "lib/net462/_._",
+        "lib/net6.0/_._",
+        "lib/net8.0-macos14.0/_._",
+        "lib/net8.0/_._",
+        "lib/netstandard2.0/_._",
+        "lib/netstandard2.1/_._",
+        "runtimes/osx/native/libSkiaSharp.dylib",
+        "skiasharp.nativeassets.macos.3.116.1.nupkg.sha512",
+        "skiasharp.nativeassets.macos.nuspec"
+      ]
+    },
+    "SkiaSharp.NativeAssets.Win32/3.116.1": {
+      "sha512": "dRQ75MCI8oz6zAs2Y1w6pq6ARs4MhdNG+gf3doOxOxdnueDXffQLGQIxON54GDoxc0WjKOoHMKBR4DhaduwwQw==",
+      "type": "package",
+      "path": "skiasharp.nativeassets.win32/3.116.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "THIRD-PARTY-NOTICES.txt",
+        "buildTransitive/net462/SkiaSharp.NativeAssets.Win32.targets",
+        "icon.png",
+        "lib/net462/_._",
+        "lib/net6.0-windows10.0.19041/_._",
+        "lib/net6.0/_._",
+        "lib/net8.0-windows10.0.19041/_._",
+        "lib/net8.0/_._",
+        "lib/netstandard2.0/_._",
+        "lib/netstandard2.1/_._",
+        "runtimes/win-arm64/native/libSkiaSharp.dll",
+        "runtimes/win-x64/native/libSkiaSharp.dll",
+        "runtimes/win-x86/native/libSkiaSharp.dll",
+        "skiasharp.nativeassets.win32.3.116.1.nupkg.sha512",
+        "skiasharp.nativeassets.win32.nuspec"
+      ]
+    },
+    "WPFExtensions/1.0.0": {
+      "sha512": "InvlRWFb1ePUvjWsxqUVz3hHw6jHF1Um3LThq72wAXfzwDMMJSyEzjZcCI+fTnaCcJHf59lyhWUc/3GamgGEKQ==",
+      "type": "package",
+      "path": "wpfextensions/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/WPFExtensions.dll",
+        "wpfextensions.1.0.0.nupkg.sha512",
+        "wpfextensions.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "GraphSharp >= 1.1.0",
+      "QuickGraph >= 3.6.61119.7",
+      "SkiaSharp >= 3.116.1"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\loanl\\.nuget\\packages\\": {},
@@ -14,11 +278,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\loanl\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj",
+      "projectUniqueName": "C:\\Users\\loanl\\source\\repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj",
       "projectName": "ProjetGraphe",
-      "projectPath": "C:\\Users\\loanl\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj",
+      "projectPath": "C:\\Users\\loanl\\source\\repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj",
       "packagesPath": "C:\\Users\\loanl\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\loanl\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\obj\\",
+      "outputPath": "C:\\Users\\loanl\\source\\repos\\Projet-Livin-Paris\\ProjetGraphe\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -45,11 +309,31 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.200"
     },
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "GraphSharp": {
+            "target": "Package",
+            "version": "[1.1.0, )"
+          },
+          "QuickGraph": {
+            "target": "Package",
+            "version": "[3.6.61119.7, )"
+          },
+          "SkiaSharp": {
+            "target": "Package",
+            "version": "[3.116.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -61,8 +345,55 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1602",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "GraphSharp 1.1.0 ne fournit pas de limite inférieure inclusive pour la dépendance WPFExtensions. WPFExtensions 1.0.0 a été résolu à la place.",
+      "libraryId": "WPFExtensions",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Le package 'GraphSharp 1.1.0' a été restauré en utilisant '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' au lieu du framework cible du projet 'net8.0'. Ce package n'est peut-être pas totalement compatible avec votre projet.",
+      "libraryId": "GraphSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Le package 'QuickGraph 3.6.61119.7' a été restauré en utilisant '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' au lieu du framework cible du projet 'net8.0'. Ce package n'est peut-être pas totalement compatible avec votre projet.",
+      "libraryId": "QuickGraph",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Le package 'WPFExtensions 1.0.0' a été restauré en utilisant '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' au lieu du framework cible du projet 'net8.0'. Ce package n'est peut-être pas totalement compatible avec votre projet.",
+      "libraryId": "WPFExtensions",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }
