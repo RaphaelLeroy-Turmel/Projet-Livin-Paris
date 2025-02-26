@@ -11,7 +11,7 @@ namespace ProjetGraphe
     internal class Graphe
     {
         private string nom_de_graphe = "";
-        private int[,] matrix = new int[,] { };
+        private int[,] matrix = new int[,] { };/// matrice d'adjacence
         private string filename = "";
         private int taille = 0;/// nombre d'arêtes
         private int ordre = 0;/// nombre de sommets/noeuds
@@ -153,8 +153,7 @@ namespace ProjetGraphe
             if (IdNodeIsExplored.Count == this.ordre) Console.WriteLine($"Le graphe {nom_de_graphe} est connexe");
             if (IdNodeIsExplored.Count < this.ordre) Console.WriteLine($"Le graphe {nom_de_graphe} n'est pas connexe");
             if (count > 0) Console.WriteLine($"Le graphe contient des cycles");
-            Console.WriteLine(" end ");
-            
+            Console.WriteLine(" end ");          
 
         }
 
