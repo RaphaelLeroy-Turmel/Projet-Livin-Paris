@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjetGraphe
 {
-    internal class Noeud
+    public class Noeud
     {
         private int noeud_id;
         private List<Noeud> relations;

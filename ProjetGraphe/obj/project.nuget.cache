@@ -1,22 +1,22 @@
 {
   "version": 2,
-  "dgSpecHash": "4Qq5M7yu26k=",
+  "dgSpecHash": "lq67cLb615o=",
   "success": true,
-  "projectFilePath": "C:\\Users\\rarap\\source\\repos\\ProjetGraphe\\ProjetGraphe\\ProjetGraphe.csproj",
+  "projectFilePath": "C:\\Users\\loanl\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\rarap\\.nuget\\packages\\graphsharp\\1.1.0\\graphsharp.1.1.0.nupkg.sha512",
-    "C:\\Users\\rarap\\.nuget\\packages\\quickgraph\\3.6.61119.7\\quickgraph.3.6.61119.7.nupkg.sha512",
-    "C:\\Users\\rarap\\.nuget\\packages\\skiasharp\\3.116.1\\skiasharp.3.116.1.nupkg.sha512",
-    "C:\\Users\\rarap\\.nuget\\packages\\skiasharp.nativeassets.macos\\3.116.1\\skiasharp.nativeassets.macos.3.116.1.nupkg.sha512",
-    "C:\\Users\\rarap\\.nuget\\packages\\skiasharp.nativeassets.win32\\3.116.1\\skiasharp.nativeassets.win32.3.116.1.nupkg.sha512",
-    "C:\\Users\\rarap\\.nuget\\packages\\wpfextensions\\1.0.0\\wpfextensions.1.0.0.nupkg.sha512"
+    "C:\\Users\\loanl\\.nuget\\packages\\graphsharp\\1.1.0\\graphsharp.1.1.0.nupkg.sha512",
+    "C:\\Users\\loanl\\.nuget\\packages\\quickgraph\\3.6.61119.7\\quickgraph.3.6.61119.7.nupkg.sha512",
+    "C:\\Users\\loanl\\.nuget\\packages\\skiasharp\\3.116.1\\skiasharp.3.116.1.nupkg.sha512",
+    "C:\\Users\\loanl\\.nuget\\packages\\skiasharp.nativeassets.macos\\3.116.1\\skiasharp.nativeassets.macos.3.116.1.nupkg.sha512",
+    "C:\\Users\\loanl\\.nuget\\packages\\skiasharp.nativeassets.win32\\3.116.1\\skiasharp.nativeassets.win32.3.116.1.nupkg.sha512",
+    "C:\\Users\\loanl\\.nuget\\packages\\wpfextensions\\1.0.0\\wpfextensions.1.0.0.nupkg.sha512"
   ],
   "logs": [
     {
       "code": "NU1602",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "GraphSharp 1.1.0 ne fournit pas de limite inférieure inclusive pour la dépendance WPFExtensions. WPFExtensions 1.0.0 a été résolu à la place",
+      "message": "GraphSharp 1.1.0 ne fournit pas de limite inférieure inclusive pour la dépendance WPFExtensions. WPFExtensions 1.0.0 a été résolu à la place.",
       "libraryId": "WPFExtensions",
       "targetGraphs": [
         "net8.0"

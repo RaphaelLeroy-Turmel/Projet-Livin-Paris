@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ProjetGraphe
 {
-    internal class Program
+    public class Program
     {// test
         static void Main(string[] args)
         {

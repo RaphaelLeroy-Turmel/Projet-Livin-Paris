@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace ProjetGraphe
 {
-    internal class Graphe
+    public class Graphe
     {
         private string nom_de_graphe = "";
         private int[,] matrix = new int[,] { };/// matrice d'adjacence

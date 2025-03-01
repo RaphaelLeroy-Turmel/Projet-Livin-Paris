@@ -32,7 +32,6 @@ namespace GraphVisualization
                 }
             }
         }
-
         //public void DrawGraph(string filePath)   //ChatGPT
         //{
         //    int width = 1000, height = 1000;
@@ -79,9 +78,10 @@ namespace GraphVisualization
         //        }
         //    }
         //}
+
         public void DrawGraph(string filePath)  //Deepseek
         {
-            int width = 1000, height = 1000; // Taille de l'image augmentée
+            int width = 1000, height = 1000; /// Taille de l'image augmentée
             using (var bitmap = new SKBitmap(width, height))
             using (var canvas = new SKCanvas(bitmap))
             using (var edgePaint = new SKPaint { Color = SKColors.DarkGray, StrokeWidth = 2 })
@@ -90,7 +90,7 @@ namespace GraphVisualization
                 int nodeCount = Graph.VertexCount;
                 SKPoint[] positions = new SKPoint[nodeCount];
 
-                // Circular Layout pour placer les nœuds
+                /// Circular Layout pour placer les nœuds
                 double angleIncrement = 2 * Math.PI / nodeCount;
                 double radius = Math.Min(width, height) / 2.5;
                 SKPoint center = new SKPoint(width / 2, height / 2);
@@ -103,7 +103,7 @@ namespace GraphVisualization
                     positions[i] = new SKPoint(x, y);
                 }
 
-                // Dessiner les arêtes (lignes droites)
+                /// Dessiner les arêtes (lignes droites)
                 foreach (var edge in Graph.Edges)
                 {
                     int src = int.Parse(edge.Source) - 1;
@@ -111,22 +111,22 @@ namespace GraphVisualization
                     SKPoint start = positions[src];
                     SKPoint end = positions[dst];
 
-                    // Dessiner une ligne droite entre les deux nœuds
+                    /// Dessiner une ligne droite entre les deux nœuds
                     canvas.DrawLine(start, end, edgePaint);
                 }
 
-                // Dessiner les nœuds
+                /// Dessiner les nœuds
                 using (var nodePaint = new SKPaint { Color = SKColors.LightBlue, Style = SKPaintStyle.Fill })
                 using (var textPaint = new SKPaint { Color = SKColors.White, TextSize = 14, TextAlign = SKTextAlign.Center })
                 {
                     for (int i = 0; i < nodeCount; i++)
                     {
-                        canvas.DrawCircle(positions[i], 15, nodePaint); // Taille des nœuds réduite
+                        canvas.DrawCircle(positions[i], 15, nodePaint); /// Taille des nœuds réduite
                         canvas.DrawText((i + 1).ToString(), positions[i].X, positions[i].Y + 5, textPaint);
                     }
                 }
 
-                // Sauvegarde de l'image
+                /// Sauvegarde de l'image
                 using (var image = SKImage.FromBitmap(bitmap))
                 using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
                 using (var stream = File.OpenWrite(filePath))
