@@ -5,6 +5,13 @@ using QuickGraph;
 using SkiaSharp;
 using System.Runtime.CompilerServices;
 
+
+/// Recherche faites avec l'ia Deepseek, la première étape était de savoir quelles étaients les bibliothèques utiles pour faire un graphe.
+/// Puis on a demandé comment faire un cercle pour afficher les noeuds dans cette forme pour que ce soit lisible
+/// A l'aide l'ia on a compris les différentes instructions pour déssiner les arètes et les noeuds
+/// Enfin on a demandé comment faire pour afficher l'image directement après l'exécutioin du code.
+/// Ce qui nous donne ceci :
+
 namespace GraphVisualization
 {
     public class GraphViewModel
@@ -32,54 +39,9 @@ namespace GraphVisualization
                 }
             }
         }
-        //public void DrawGraph(string filePath)   //ChatGPT
-        //{
-        //    int width = 1000, height = 1000;
-        //    using (var bitmap = new SKBitmap(width, height))
-        //    using (var canvas = new SKCanvas(bitmap))
-        //    using (var paint = new SKPaint { Color = SKColors.Black, StrokeWidth = 3 })
-        //    {
-        //        canvas.Clear(SKColors.White);
-        //        int nodeCount = Graph.VertexCount;
-        //        SKPoint[] positions = new SKPoint[nodeCount];
-        //        Random rand = new Random();
-
-        //        // Générer des positions aléatoires pour les nœuds
-        //        for (int i = 0; i < nodeCount; i++)
-        //        {
-        //            positions[i] = new SKPoint(rand.Next(50, width - 50), rand.Next(50, height - 50));
-        //        }
-
-        //        // Dessiner les arêtes
-        //        foreach (var edge in Graph.Edges)
-        //        {
-        //            int src = int.Parse(edge.Source) - 1;
-        //            int dst = int.Parse(edge.Target) - 1;
-        //            canvas.DrawLine(positions[src], positions[dst], paint);
-        //        }
-
-        //        // Dessiner les nœuds
-        //        using (var nodePaint = new SKPaint { Color = SKColors.Blue, Style = SKPaintStyle.Fill })
-        //        using (var textPaint = new SKPaint { Color = SKColors.White, TextSize = 20 })
-        //        {
-        //            for (int i = 0; i < nodeCount; i++)
-        //            {
-        //                canvas.DrawCircle(positions[i], 20, nodePaint);
-        //                canvas.DrawText((i + 1).ToString(), positions[i].X - 8, positions[i].Y + 8, textPaint);
-        //            }
-        //        }
-
-        //        // Sauvegarde de l'image
-        //        using (var image = SKImage.FromBitmap(bitmap))
-        //        using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
-        //        using (var stream = File.OpenWrite(filePath))
-        //        {
-        //            data.SaveTo(stream);
-        //        }
-        //    }
-        //}
-
-        public void DrawGraph(string filePath)  //Deepseek
+        
+        
+        public void DrawGraph(string filePath)  ///Deepseek
         {
             int width = 1000, height = 1000; /// Taille de l'image augmentée
             using (var bitmap = new SKBitmap(width, height))
