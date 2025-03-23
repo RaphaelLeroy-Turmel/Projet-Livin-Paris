@@ -8,22 +8,21 @@ using System.Xml.Linq;
 
 namespace ProjetGraphe
 {
-    public class Graphe
+    public class Graphe<T>
     {
         private string nom_de_graphe = "";
         private int[,] matrix = new int[,] { };/// matrice d'adjacence
         private string filename = "";
         private int taille = 0;/// nombre d'arêtes
         private int ordre = 0;/// nombre de sommets/noeuds
-        private Noeud[] graphe = new Noeud[0];
+        private Noeud<T>[] graphe = new Noeud<T>[0];
         
 
-        public Noeud[] GetGraphe
+        public Noeud<T>[] GetGraphe
         {
             get { return graphe; }
             set { graphe = value; }
         }
-
         public int[,] Matrix
         {
             get { return matrix; }
@@ -51,7 +50,7 @@ namespace ProjetGraphe
                 {
                     relation = line.Split(' ');
                     this.ordre = Convert.ToInt32(relation[0]);
-                    graphe = new Noeud[ordre];
+                    graphe = new Noeud<T>[ordre];
                     matrix = new int[ordre, ordre];/// on sait que la matrice est carré et symétrique car les relations entre les membres sont réciproques
                 }
                 if (b>1)
@@ -77,7 +76,7 @@ namespace ProjetGraphe
             
             for(int i=0 ; i < matrix.GetLength(0) ; i++)
             {
-                Noeud X = new Noeud(i);///on créer un noeud n°i
+                Noeud<T> X = new Noeud<T>(i);///on créer un noeud n°i
                 graphe[i] = X; /// on ajoute ce noeud au tableau de noeud (le graphe)
                               
             }
@@ -127,12 +126,12 @@ namespace ProjetGraphe
             this.matrix[noeudA-1, noeudB-1] = 1;
 
         }
-        public void ParcoursEnLargeur(Noeud ActualNode)
+        public void ParcoursEnLargeur(Noeud<T> ActualNode)
         /// méthode itérative de parcours
         ///Actual Node est le noeud actuel ou en est l'algorithme de parcours il commence par le noeud renseigné par l'utiliisateur ( j'ai commencé au noeud 1)
         {///J'utilise une File (propriété FIFO nécéssaire pour ce type de parcours)
             Console.WriteLine("Parcours en largeur d'abord du graphe ");
-            Queue<Noeud> File = new Queue<Noeud> ();
+            Queue<Noeud<T>> File = new Queue<Noeud<T>> ();
             List<int> IdNodeIsExplored = new List<int>();
 
             File.Enqueue(graphe[ActualNode.Noeud_Id]);
@@ -142,7 +141,7 @@ namespace ProjetGraphe
                 ActualNode= (File.Dequeue());
                 Console.WriteLine("Noeud n°" + ((ActualNode.Noeud_Id)+1));
 
-                foreach (Noeud NoeudVoisin in ActualNode.Relations) 
+                foreach (Noeud<T> NoeudVoisin in ActualNode.Relations) 
                 {
                     if(!IdNodeIsExplored.Contains(NoeudVoisin.Noeud_Id))
                     {
@@ -164,18 +163,18 @@ namespace ProjetGraphe
 
         }
 
-        public void ParcoursEnProfondeur (Noeud ActualNode)/// méthode itérative de parcours
+        public void ParcoursEnProfondeur (Noeud<T> ActualNode)/// méthode itérative de parcours
         {///Actual Node est le noeud actuel ou en est l'algorithme de parcours il commence par le noeud renseigné par l'utiliisateur ( j'ai commencé au noeud 1)
             ///J'utilise une Pile (propriété FILO nécéssaire pour ce type de parcours)
             Console.WriteLine("Parcours en profondeur d'abord du graphe ");
-            Stack<Noeud> Pile = new Stack<Noeud>();
+            Stack<Noeud<T>> Pile = new Stack<Noeud<T>>();
             Pile.Push(ActualNode);
             List<int> IdNodeIsExplored = new List<int>();
             while (Pile != null && Pile.Count >0)
             {
                 Console.WriteLine("Noeud n°" + ((ActualNode.Noeud_Id) + 1));
                 IdNodeIsExplored.Add(ActualNode.Noeud_Id);
-                foreach (Noeud Node in ActualNode.Relations)
+                foreach (Noeud<T> Node in ActualNode.Relations)
                 {
                     if (!IdNodeIsExplored.Contains(Node.Noeud_Id) && !Pile.Contains(Node))
                     {

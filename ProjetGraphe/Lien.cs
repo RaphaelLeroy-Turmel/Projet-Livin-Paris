@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProjetGraphe
 {
-    public class Lien
+    public class Lien<T>
     {
-        private Noeud noeudA;
-        private Noeud noeudB;
+        private Noeud<T> noeudA;
+        private Noeud<T> noeudB;
 
-        public Lien(Noeud noeudA, Noeud noeudB)
+        public Lien(Noeud<T> noeudA, Noeud<T> noeudB)
         {
             this.noeudA = noeudA;
             this.noeudB = noeudB;
