@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -15,10 +16,10 @@ namespace ProjetGraphe
         private string filename = "";
         private int taille = 0;/// nombre d'arêtes
         private int ordre = 0;/// nombre de sommets/noeuds
-        private Noeud<T>[] graphe = new Noeud<T>[0];
+        private List<Noeud<Station>> graphe = new List<Noeud<Station>>();
         
 
-        public Noeud<T>[] GetGraphe
+        public List<Noeud<Station>> GetGraphe
         {
             get { return graphe; }
             set { graphe = value; }
@@ -28,8 +29,54 @@ namespace ProjetGraphe
             get { return matrix; }
             set { matrix = value; }
         }
-        
-        
+
+        public Graphe(string nom, string filename)
+        {
+            this.nom_de_graphe = nom;
+            this.filename = filename;
+            graphe = new List<Noeud<Station>>();
+            StreamReader sr = new StreamReader(this.filename);
+            sr.ReadLine();
+            string[] colonne = new string[0];
+            int b = 0;
+            string line = sr.ReadLine();
+            line = sr.ReadLine();
+            int countStationId = 0;
+            while (line != null)
+            {
+                colonne = line.Split(',');
+                for (int i = 0; i < colonne.Length; i++)
+                {
+                    colonne[i] = colonne[i].Trim('\"'); // Enlever les guillemets autour des éléments
+                }
+                //int.TryParse(colonne[1], out result)
+                  //  colonne[1] is int
+
+
+
+                if (colonne[6].Contains("Paris") && int.TryParse(colonne[1], out int result) )
+                {
+                    int IdLigne = Convert.ToInt32(colonne[0]);
+                    int LibelleLigne = Convert.ToInt32(colonne[1]);
+                    string LibelleStation = colonne[2];
+                    double Longitude = Convert.ToDouble(colonne[3]);
+                    double Latitude = Convert.ToDouble(colonne[4]);
+
+                    Station station = new Station(IdLigne,LibelleLigne, LibelleStation, Longitude, Latitude);
+                    Noeud<Station> noeud = new Noeud<Station>(countStationId,station);
+                    graphe.Add(noeud);
+                }
+
+
+
+                    line = sr.ReadLine();
+                countStationId++;
+            }
+            CréerGraphe();
+            sr.Close();
+        }
+
+        /*
         public Graphe(string nom,string filename) 
         {
             this.nom_de_graphe = nom;
@@ -69,7 +116,7 @@ namespace ProjetGraphe
             CréerGraphe();
             sr.Close();
         }
-        
+        */
 
         public void CréerGraphe()
         {

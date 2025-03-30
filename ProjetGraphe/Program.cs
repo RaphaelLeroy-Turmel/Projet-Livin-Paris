@@ -15,10 +15,10 @@ namespace ProjetGraphe
             Karaté.ParcoursEnProfondeur(Karaté.GetGraphe[0]);
 
 
-            //Karaté.AddRelationMatrix(1, 10);
-            //Karaté.AddRelationMatrix(2, 2);
-            //Karaté.MatrixtoString();
-            //bonjour
+            Karaté.AddRelationMatrix(1, 10);
+            Karaté.AddRelationMatrix(2, 2);
+            Karaté.MatrixtoString();
+            bonjour
 
             GraphViewModel Graphe = new GraphViewModel(Karaté.Matrix);
             Graphe.GenerationImage(Karaté.Matrix);

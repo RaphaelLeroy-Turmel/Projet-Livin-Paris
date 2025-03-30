@@ -8,22 +8,31 @@ namespace ProjetGraphe
 {
     public class Noeud<T>
     {
+        private T element;
         private int noeud_id;
-        private List<Noeud<T>> relations;
+        public List<Noeud<T>> relations;
 
 
 
-        public Noeud(int noeud_id, List<Noeud<T>> relations)
+        public Noeud(int noeud_id,T element, List<Noeud<T>> relations)
         {
             this.noeud_id = noeud_id;
+            this.element = element;
             this.relations = relations;
         }
-        public Noeud(int noeud_id)
+        public Noeud(int noeud_id,T element)
         {
             this.noeud_id = noeud_id;
-            List<T> ListeDeRelations = new List<T>();
+            this.element = element;
+            relations= new List<Noeud<T>>();
             
         }
+        public T Element
+        {
+            get { return element; }
+            set { element = value; }
+        }
+
 
         public List<Noeud<T>> Relations
         {
