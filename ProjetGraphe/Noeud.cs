@@ -8,23 +8,34 @@ namespace ProjetGraphe
 {
     public class Noeud<T>
     {
-        private T element;
-        private int noeud_id;
-        public List<Noeud<T>> relations;
+        public T element;
+        public int noeud_id;
+        public List<Lien<T>> relationsEntrantes;
+        public List<Lien<T>> relationsSortantes;
 
 
 
-        public Noeud(int noeud_id,T element, List<Noeud<T>> relations)
+        public Noeud(int noeud_id,T element, List<Lien<T>> relationsE, List<Lien<T>> relationsS)
         {
             this.noeud_id = noeud_id;
             this.element = element;
-            this.relations = relations;
+            this.relationsEntrantes = relationsE;
+            this.relationsSortantes = relationsS;
+        }
+
+        public Noeud(Noeud<T> noeud) 
+        {
+            this.element = noeud.element;
+            this.relationsEntrantes = noeud.relationsEntrantes;
+            this.relationsEntrantes = noeud.relationsEntrantes;
+            this.relationsEntrantes = noeud.relationsEntrantes;
         }
         public Noeud(int noeud_id,T element)
         {
             this.noeud_id = noeud_id;
             this.element = element;
-            relations= new List<Noeud<T>>();
+            relationsEntrantes= new List<Lien<T>>();
+            relationsSortantes= new List<Lien<T>>();
             
         }
         public T Element
@@ -33,16 +44,7 @@ namespace ProjetGraphe
             set { element = value; }
         }
 
-
-        public List<Noeud<T>> Relations
-        {
-            get { return relations; }
-            set { relations = value; }
-        }
-         public int Noeud_Id
-        {
-            get { return noeud_id; }
-            set { noeud_id = value; }
-        }
+        
+      
     }
 }

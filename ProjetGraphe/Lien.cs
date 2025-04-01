@@ -8,13 +8,16 @@ namespace ProjetGraphe
 {
     public class Lien<T>
     {
-        private Noeud<T> noeudA;
-        private Noeud<T> noeudB;
+        public Noeud<T> noeudDépart;
+        public Noeud<T> noeudArrivé;
+        public int tempsTrajet;
 
         public Lien(Noeud<T> noeudA, Noeud<T> noeudB)
         {
-            this.noeudA = noeudA;
-            this.noeudB = noeudB;
+            this.noeudDépart = noeudA;
+            this.noeudArrivé = noeudB;
         }
+
+        
     }
 }
