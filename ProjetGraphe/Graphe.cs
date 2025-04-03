@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Collections.Specialized.BitVector32;
 
-namespace ProjetGraphe
+namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 {
     public class Graphe<T>
     {

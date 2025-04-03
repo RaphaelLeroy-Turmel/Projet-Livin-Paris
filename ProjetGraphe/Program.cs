@@ -1,7 +1,7 @@
 ﻿using GraphVisualization;
 using System.Diagnostics;
 
-namespace ProjetGraphe
+namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 {
     public class Program
     {// test
@@ -24,10 +24,11 @@ namespace ProjetGraphe
             //Graphe.GenerationImage(Karaté.Matrix);
 
             Graphe<Station> PlanMétro = new Graphe<Station>("Plan métro", "MetroParis feuille 1.csv", "metro Paris feuille 2.csv");
-            //PlanMétro.AfficheMatrice();
+            PlanMétro.AfficheMatrice();
             //PlanMétro.VérifLien();
-            GraphViewModel Graphe = new GraphViewModel(PlanMétro.Matrix);
-            Graphe.GenerationImage(PlanMétro.Matrix);
+            var stations = GraphViewModel.ChargerStationsDepuisCSV("MetroParis feuille 1.csv");
+            GraphViewModel Graphe = new GraphViewModel(stations,PlanMétro.Matrix);   
+            Graphe.GenerationImage(stations, PlanMétro.Matrix);
         }
     }
 }
