@@ -1,8 +1,10 @@
 ﻿using Microsoft.VisualBasic;
+using QuickGraph;
 using QuickGraph.Algorithms.MaximumFlow;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,14 +20,14 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
     {
         private string nom_de_graphe = "";
         private int[,] AdjencyMatrix = new int[,] { };/// matrice d'adjacence
-        
+
         private int taille = 0;/// nombre d'arêtes
         private int ordre = 0;/// nombre de sommets/noeuds
-        
+
         private List<Noeud<T>> ListeDeNoeuds = new List<Noeud<T>>();
 
 
-        
+
         public int[,] Matrix
         {
             get { return AdjencyMatrix; }
@@ -36,15 +38,15 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
         {
             this.nom_de_graphe = nom;
             ListeDeNoeuds = new List<Noeud<T>>();
-            
+
             StreamReader sr = new StreamReader(filename1);
             sr.ReadLine(); // Ignore la première ligne 
 
             string line = sr.ReadLine();
             while (line != null)
             {
-                string[] colonne = line.Split(';'); 
-                
+                string[] colonne = line.Split(';');
+
 
                 // Vérification du nombre de colonnes (évite IndexOutOfRangeException)
                 if (colonne.Length < 7)
@@ -68,15 +70,15 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                 string LibelleStation = colonne[2];
                 double Longitude = Convert.ToDouble(colonne[3], CultureInfo.InvariantCulture);/// CultureInfo.Invariant permet de convertir en double peut importante si le séparateur décimal est un point ou une virgule
                 double Latitude = Convert.ToDouble(colonne[4], CultureInfo.InvariantCulture);
-                
+
                 // Création d'un objet station
                 Station station = new Station(IdStation, LibelleLigne, LibelleStation, Longitude, Latitude);
-                
+
                 // Création d'un noeud générique dans lequel on met une station qui dérive de T
                 Noeud<T> noeud = new Noeud<T>(IdStation, (T)(object)station);
                 if (noeud.element is Station stationElement)
                 {
-                    stationElement.AddLigne(LibelleLigne);                   
+                    stationElement.AddLigne(LibelleLigne);
                 }
                 else
                 {
@@ -84,7 +86,7 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                 }
 
                 ListeDeNoeuds.Add(noeud);
-                
+
                 line = sr.ReadLine(); // Lire la ligne suivante
             }
 
@@ -104,7 +106,8 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 
             //SuppDoublons(); // on supprime et fusionne les stations en doublons
             sr.Close();
-            foreach(Noeud<T> noeud in ListeDeNoeuds) {
+            foreach (Noeud<T> noeud in ListeDeNoeuds)
+            {
                 if (noeud.element is Station stationElement)
                 {
                     Console.WriteLine(stationElement.StationtoString());
@@ -119,9 +122,10 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
         {/// on lit la feuille n°2 qui contient les arcs
             StreamReader Lecteur = new StreamReader(filename2);
             Lecteur.ReadLine(); // Ignore la première ligne 
-
+            int count = 0;
+            int countNULL = 0;
             string line = Lecteur.ReadLine();
-            while (line != null )
+            while (line != null)
             {
                 string[] colonne = line.Split(';');
 
@@ -130,64 +134,77 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                 int IDprécédent = 0;
                 int IDSuivant = 0;
                 int tempsTrajet = 0;
-                if ( colonne[2]!= "")
+
+                if (colonne[2] != "" && (colonne[2])[0] !='u')
                 {
-                     IDprécédent = Convert.ToInt32(colonne[2]);
+                    IDprécédent = Convert.ToInt32(colonne[2]);
                 }
-                if (colonne[3] != "")
+                if (colonne[3] != "" && (colonne[3])[0] != 'u')
                 {
-                     IDSuivant = Convert.ToInt32(colonne[3]);
+                    IDSuivant = Convert.ToInt32(colonne[3]);
                 }
-                if (colonne[4] != "")
+                if (colonne[4] == null || colonne[4] == "")
                 {
-                     tempsTrajet = Convert.ToInt32(colonne[4]);
+                    Random random = new Random();
+                    int randomNumber = random.Next(1, 6);
+                    tempsTrajet = 6;
+                    countNULL++;
                 }
-                //if (colonne[4] == "")
-                //{
-                //    Random random = new Random();
-                //    int randomNumber = random.Next(1, 6);
-                //    tempsTrajet = randomNumber;
-                //}
+                if (colonne[4] != "" && colonne[4] != null)
+                {
+                    tempsTrajet = Convert.ToInt32(colonne[4]);
+                    count++;
+                }
+                //Console.Write("    col4 :|" + colonne[4]+" et t:|"+ tempsTrajet);
+
                 if (colonne[5] != "")
                 {
                     int tempsChangement = Convert.ToInt32(colonne[5]);
+
                 }
 
                 Noeud<T> Station = ListeDeNoeuds[stationID - 1];
                 Noeud<T> StationPrécédente = null;
                 Noeud<T> StationSuivante = null;
-                if (IDprécédent > 0) {
+                if (IDprécédent > 0)
+                {
                     StationPrécédente = ListeDeNoeuds[IDprécédent - 1];
                 }
-                if(IDSuivant < 332 && IDSuivant>2) {
-
-                    StationSuivante = ListeDeNoeuds[IDSuivant - 1]; 
-                }
-                
-                if (StationPrécédente != null && Station.element is Station stationElmnt && StationPrécédente.element is Station stationElmntPré )
+                if (IDSuivant < 332 && IDSuivant > 2)
                 {
+
+                    StationSuivante = ListeDeNoeuds[IDSuivant - 1];
+                }
+
+                if (StationPrécédente != null && Station.element is Station stationElmnt && StationPrécédente.element is Station stationElmntPré)
+                {
+                    Console.Write("station pré" + StationPrécédente.AfficheElement());
+                    Console.WriteLine("station " + Station.AfficheElement());
                     if (stationElmnt.ListeDesLignes[0] == stationElmntPré.ListeDesLignes[0])
                     {
-                        
+                        Console.Write("station pré" + StationPrécédente.AfficheElement());
+                        Console.WriteLine("station " + Station.AfficheElement() + "STOP");
+
                         Lien<T> LienE = new Lien<T>(StationPrécédente, Station);
                         LienE.tempsTrajet = tempsTrajet;
                         Station.relationsEntrantes.Add(LienE);
-                        Console.WriteLine(" temps de trajet entrant" +LienE.tempsTrajet);
+                        //Console.WriteLine(" temps de trajet entrant" +LienE.tempsTrajet);
 
 
                     }
 
                 }
-                if (StationSuivante != null && Station.element is Station stationElmnt1  && StationSuivante.element is Station stationElmntSui)
+
+                if (StationSuivante != null && Station.element is Station stationElmnt1 && StationSuivante.element is Station stationElmntSui)
                 {
-                   
+
                     if (stationElmnt1.ListeDesLignes[0] == stationElmntSui.ListeDesLignes[0])
-                    {                        
+                    {
                         Lien<T> LienS = new Lien<T>(Station, StationSuivante);
-                        LienS.tempsTrajet = tempsTrajet;                        
+                        LienS.tempsTrajet = tempsTrajet;
                         Station.relationsSortantes.Add(LienS);
-                        Console.WriteLine(" temps de trajet sortant" +LienS.tempsTrajet);
-                    }                   
+                        //Console.WriteLine(" temps de trajet sortant" +LienS.tempsTrajet);
+                    }
 
                 }
 
@@ -196,7 +213,7 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                 line = Lecteur.ReadLine(); // Lire la ligne suivante
             }
             Lecteur.Close();
-
+            Console.WriteLine("nombre totale de liens : !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + count + " et null" + countNULL);
         }
 
         public void SuppDoublons()
@@ -207,7 +224,7 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                 {
                     if (noeudA.element is Station SA && noeudB.element is Station SB)
                     {
-                        if ( SA.Id != SB.Id && SB.LibelleStation == SA.LibelleStation)
+                        if (SA.Id != SB.Id && SB.LibelleStation == SA.LibelleStation)
                         {
                             string LA = String.Join(" ", SA.ListeDesLignes);
 
@@ -215,7 +232,7 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                             {
                                 if (!noeudA.relationsEntrantes.Contains(lienE))
                                 {
-                                    noeudA.relationsEntrantes.Add(lienE);                                    
+                                    noeudA.relationsEntrantes.Add(lienE);
                                 }
 
                             }
@@ -224,7 +241,7 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                                 if (!noeudA.relationsSortantes.Contains(lienS))
                                 {
                                     noeudA.relationsSortantes.Add(lienS);
-                                    
+
                                 }
 
                             }
@@ -236,20 +253,72 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                             //Console.WriteLine($"ligne finale : ");
                             //foreach (int ligneID in SA.ListeDesLignes) { Console.WriteLine(ligneID); }
                         }
-                        
+
                     }
                 }
             }
-           
+
         }
+
+        public void PCC(int start)
+        {
+            int[] distances = Dijkstra(0);
+            for (int i = 0; i < distances.Length; i++)
+            {
+                Console.WriteLine($"Distance de 0 à {i} : {distances[i]}");
+            }
+
+        }
+
+        public int[] Dijkstra(int start)
+        {
+            int size = 333;
+            int[] distances = new int[size];
+            bool[] visited = new bool[size];
+
+            for (int i = 0; i < size; i++)
+                distances[i] = int.MaxValue;
+            distances[start] = 0;
+
+            for (int count = 0; count < size - 1; count++)
+            {
+                int u = MinDistance(distances, visited);
+                visited[u] = true;
+
+                for (int v = 0; v < size; v++)
+                {
+                    if (!visited[v] && AdjencyMatrix[u, v] != int.MaxValue && distances[u] != int.MaxValue && distances[u] + AdjencyMatrix[u, v] < distances[v])
+                    {
+                        distances[v] = distances[u] + AdjencyMatrix[u, v];
+                    }
+                }
+            }
+            return distances;
+        }
+
+        private int MinDistance(int[] distances, bool[] visited)
+        {
+            int min = int.MaxValue, minIndex = -1;
+            for (int v = 0; v < 333; v++)
+            {
+                if (!visited[v] && distances[v] <= min)
+                {
+                    min = distances[v];
+                    minIndex = v;
+                }
+            }
+            return minIndex;
+        }
+
+
 
         static int LigneCommune(Station stationA, Station stationB)
         {
-            foreach( int ligneA in stationA.ListeDesLignes)
+            foreach (int ligneA in stationA.ListeDesLignes)
             {
-                foreach(int ligneB in stationB.ListeDesLignes)
+                foreach (int ligneB in stationB.ListeDesLignes)
                 {
-                    if(ligneA == ligneB) { return ligneA; }
+                    if (ligneA == ligneB) { return ligneA; }
                 }
             }
             return -1;
@@ -267,16 +336,16 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             }
             return null;
         }
-        
+
         public int[,] MatriceAdjacence()
         {
-            int[,] matrice = new int[331, 331];
-            foreach( Noeud<T> noeud in ListeDeNoeuds)
+            int[,] matrice = new int[333, 333];
+            foreach (Noeud<T> noeud in ListeDeNoeuds)
             {
-                foreach(Lien<T> lien in noeud.relationsEntrantes)
+                foreach (Lien<T> lien in noeud.relationsEntrantes)
                 {
-                    matrice[lien.noeudDépart.noeud_id, lien.noeudArrivé.noeud_id] = -(lien.tempsTrajet);
-                    matrice[lien.noeudArrivé.noeud_id, lien.noeudDépart.noeud_id] = -(lien.tempsTrajet);
+                    matrice[lien.noeudDépart.noeud_id, lien.noeudArrivé.noeud_id] = (lien.tempsTrajet);
+                    matrice[lien.noeudArrivé.noeud_id, lien.noeudDépart.noeud_id] = (lien.tempsTrajet);
                 }
                 foreach (Lien<T> lien in noeud.relationsSortantes)
                 {
@@ -293,7 +362,7 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             {
                 foreach (Lien<T> lien in noeud.relationsEntrantes)
                 {
-                    Console.WriteLine(lien.noeudArrivé.noeud_id+" temps de trajet : " + lien.tempsTrajet);
+                    Console.WriteLine(lien.noeudArrivé.noeud_id + " temps de trajet : " + lien.tempsTrajet);
                 }
                 foreach (Lien<T> lien in noeud.relationsSortantes)
                 {
@@ -301,6 +370,37 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                 }
 
             }
+        }
+
+        public static int CalculerTemps(double distance)
+        {
+            int vitesse = 25; // la vitesse moyenne d'un métro est de 25 km/h
+            return Convert.ToInt32(distance / vitesse);
+        }
+
+        public static double CalculerDistance(double latitude1, double longitude1, double latitude2, double longitude2)
+        {
+            // Conversion des degrés en radians
+            double rayonTerre = 6371;
+            double phi1 = DegresEnRadians(latitude1);
+            double phi2 = DegresEnRadians(latitude2);
+            double deltaPhi = DegresEnRadians(latitude2 - latitude1);
+            double deltaLambda = DegresEnRadians(longitude2 - longitude1);
+
+            // Formule de Haversine
+            double a = Math.Sin(deltaPhi / 2) * Math.Sin(deltaPhi / 2) +
+                       Math.Cos(phi1) * Math.Cos(phi2) *
+                       Math.Sin(deltaLambda / 2) * Math.Sin(deltaLambda / 2);
+
+            double c = 2 * Math.Asin(Math.Sqrt(a));
+
+            // Distance finale
+            return rayonTerre * c;
+        }
+
+        private static double DegresEnRadians(double degres)
+        {
+            return degres * Math.PI / 180.0;
         }
 
 
@@ -437,31 +537,35 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 
         public void AfficheMatrice()
         {
-            for(int i =0; i< AdjencyMatrix.GetLength(0); i++)
+            int count = 0;
+            for (int i = 0; i < AdjencyMatrix.GetLength(0); i++)
             {
-                for(int j =0; j<AdjencyMatrix.GetLength(1); j++)
+                for (int j = 0; j < AdjencyMatrix.GetLength(1); j++)
                 {
-                    Console.Write( AdjencyMatrix[i, j] +"  ");
+                    int a = AdjencyMatrix[i, j];
+                    if (a != 0) { count++; }
+                    Console.Write(a + "  ");
                 }
 
             }
+            Console.WriteLine(" LE compte lien matrice : " + count);
         }
-        
-        
+
+
         public void MatrixtoString()
         {
-            
-            for( int i =-1; i<AdjencyMatrix.GetLength(0); i++)
+
+            for (int i = -1; i < AdjencyMatrix.GetLength(0); i++)
             {
-                if (i >-1) 
+                if (i > -1)
                 {
                     if (i < 9)
                     {
-                        Console.Write( " " + (i+1)+"   ");
+                        Console.Write(" " + (i + 1) + "   ");
                     }
                     else
                     {
-                        Console.Write( (i+1)+"   ");
+                        Console.Write((i + 1) + "   ");
                     }
                 }
                 if (i == -1)
@@ -470,22 +574,22 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                 }
 
 
-                for ( int j =0;j<AdjencyMatrix.GetLength(1); j++)
+                for (int j = 0; j < AdjencyMatrix.GetLength(1); j++)
                 {
-                    if(i == -1)
-                    {                        
+                    if (i == -1)
+                    {
                         if (j < 10)
                         {
-                            Console.Write("  "+(j+1) );
+                            Console.Write("  " + (j + 1));
                         }
                         else
                         {
-                            Console.Write(" "+(j +1) );
+                            Console.Write(" " + (j + 1));
                         }
                     }
-                    else 
-                    { 
-                        if(AdjencyMatrix[i, j] < 10)
+                    else
+                    {
+                        if (AdjencyMatrix[i, j] < 10)
                         {
                             Console.Write(AdjencyMatrix[i, j] + "  ");
                         }
@@ -493,9 +597,9 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
                         {
                             Console.Write(AdjencyMatrix[i, j] + " ");
                         }
-                       
+
                     }
-                    
+
                 }
                 Console.WriteLine();
             }
@@ -503,9 +607,9 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             Console.WriteLine($"Ci dessus la matrice du graphe :{nom_de_graphe} de taille {taille} et d'ordre {ordre}.");
             Console.WriteLine();
         }/// Affichage dans la console de la matrice d'adjacence
-        
+
 
     }
 
-    
+
 }

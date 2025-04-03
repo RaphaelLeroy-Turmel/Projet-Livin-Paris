@@ -139,9 +139,15 @@ namespace GraphVisualization///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_V
                 {
                     if (adjacencyMatrix[i, j] != 0)
                     {
-                        var srcName = stations[i].LibelleStation;
-                        var dstName = stations[j].LibelleStation;
-                        Graph.AddEdge(new Edge<string>(srcName, dstName));
+                        var srcName = " i depasse"; 
+                        var dstName = " j depasse";
+                        if (i < stations.Count() && j < stations.Count())
+                        {
+                             srcName = stations[i].LibelleStation;
+                            dstName = stations[j].LibelleStation;
+                            Graph.AddEdge(new Edge<string>(srcName, dstName));
+                        }
+                        
                     }
                 }
             }

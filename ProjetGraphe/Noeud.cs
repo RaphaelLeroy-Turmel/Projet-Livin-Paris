@@ -43,8 +43,15 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             get { return element; }
             set { element = value; }
         }
+        public string AfficheElement()
+        {
+            if (this.element is Station stationElmnt)
+            {
+                return (Convert.ToString(stationElmnt.Id) + stationElmnt.LibelleStation);
+            }
+            return null;
+        }
 
-        
-      
+
     }
 }
