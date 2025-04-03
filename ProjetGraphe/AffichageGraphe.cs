@@ -32,7 +32,7 @@ namespace GraphVisualization
             {
                 for (int j = 0; j < size; j++)
                 {
-                    if (adjacencyMatrix[i, j] == 1)
+                    if (adjacencyMatrix[i, j] !=0)
                     {
                         Graph.AddEdge(new Edge<string>((i + 1).ToString(), (j + 1).ToString()));
                     }
@@ -46,7 +46,7 @@ namespace GraphVisualization
             int width = 1000, height = 1000; /// Taille de l'image augmentée
             using (var bitmap = new SKBitmap(width, height))
             using (var canvas = new SKCanvas(bitmap))
-            using (var edgePaint = new SKPaint { Color = SKColors.DarkGray, StrokeWidth = 2 })
+            using (var edgePaint = new SKPaint { Color = SKColors.DarkGray, StrokeWidth = 4 })
             {
                 canvas.Clear(SKColors.White);
                 int nodeCount = Graph.VertexCount;

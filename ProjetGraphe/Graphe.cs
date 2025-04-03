@@ -36,7 +36,7 @@ namespace ProjetGraphe
         {
             this.nom_de_graphe = nom;
             ListeDeNoeuds = new List<Noeud<T>>();
-            AdjencyMatrix = MatriceAdjacence();
+            
             StreamReader sr = new StreamReader(filename1);
             sr.ReadLine(); // Ignore la première ligne 
 
@@ -90,7 +90,9 @@ namespace ProjetGraphe
 
             AddArcs(filename2);
             SuppDoublons();
-            
+
+            AdjencyMatrix = MatriceAdjacence();
+
             //foreach (Noeud<T> noeud in ListeDeNoeuds)
             //{
             //    if (noeud.element is Station stationElement)
@@ -109,7 +111,7 @@ namespace ProjetGraphe
                 }
             }
 
-           
+
         }
 
 
@@ -285,7 +287,21 @@ namespace ProjetGraphe
             }
             return matrice;
         }
+        public void VérifLien()
+        {
+            foreach (Noeud<T> noeud in ListeDeNoeuds)
+            {
+                foreach (Lien<T> lien in noeud.relationsEntrantes)
+                {
+                    Console.WriteLine(lien.noeudArrivé.noeud_id+" temps de trajet : " + lien.tempsTrajet);
+                }
+                foreach (Lien<T> lien in noeud.relationsSortantes)
+                {
+                    Console.WriteLine(lien.noeudArrivé.noeud_id + " temps de trajet : " + lien.tempsTrajet);
+                }
 
+            }
+        }
 
 
 
@@ -333,12 +349,12 @@ namespace ProjetGraphe
 
         //public void CréerGraphe()
         //{
-            
+
         //    for(int i=0 ; i < matrix.GetLength(0) ; i++)
         //    {
         //        Noeud<Station> X = new Noeud<Station>(i);///on créer un noeud n°i
         //        ListeDeNoeuds[i] = X; /// on ajoute ce noeud au tableau de noeud (le graphe)
-                              
+
         //    }
         //    for (int i = 0; i < matrix.GetLength(0); i++)
         //    {
@@ -347,18 +363,18 @@ namespace ProjetGraphe
         //            if (matrix[i, j] == 1)
         //            {
         //                this.ListeDeNoeuds[i].Relations.Add(ListeDeNoeuds[j]);
-                        
+
         //            }
         //        }
 
         //    }
 
-                
-        //}
-        
-        
 
-            
+        //}
+
+
+
+
         //public void ParcoursEnLargeur(Noeud<Station> ActualNode)
         ///// méthode itérative de parcours
         /////Actual Node est le noeud actuel ou en est l'algorithme de parcours il commence par le noeud renseigné par l'utiliisateur ( j'ai commencé au noeud 1)
@@ -385,8 +401,8 @@ namespace ProjetGraphe
         //            {
         //                count++;
         //            }
-                
-                
+
+
         //        }             
         //    }
         //    if (IdNodeIsExplored.Count == this.ordre) Console.WriteLine($"Le graphe {nom_de_graphe} est connexe");
@@ -419,7 +435,17 @@ namespace ProjetGraphe
         //    }
         //}
 
-        
+        public void AfficheMatrice()
+        {
+            for(int i =0; i< AdjencyMatrix.GetLength(0); i++)
+            {
+                for(int j =0; j<AdjencyMatrix.GetLength(1); j++)
+                {
+                    Console.Write( AdjencyMatrix[i, j] +"  ");
+                }
+
+            }
+        }
         
         
         public void MatrixtoString()

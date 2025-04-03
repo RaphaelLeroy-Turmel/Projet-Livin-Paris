@@ -24,9 +24,10 @@ namespace ProjetGraphe
             //Graphe.GenerationImage(Karaté.Matrix);
 
             Graphe<Station> PlanMétro = new Graphe<Station>("Plan métro", "MetroParis feuille 1.csv", "metro Paris feuille 2.csv");
-            //PlanMétro.MatrixtoString();
-            //GraphViewModel Graphe = new GraphViewModel(PlanMétro.Matrix);
-            //Graphe.GenerationImage(PlanMétro.Matrix);
+            //PlanMétro.AfficheMatrice();
+            //PlanMétro.VérifLien();
+            GraphViewModel Graphe = new GraphViewModel(PlanMétro.Matrix);
+            Graphe.GenerationImage(PlanMétro.Matrix);
         }
     }
 }
