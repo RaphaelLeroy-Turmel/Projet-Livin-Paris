@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kisho\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj": {}
+    "C:\\Users\\kisho\\source\\repos\\livinparis\\ProjetGraphe\\ProjetGraphe.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kisho\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj": {
+    "C:\\Users\\kisho\\source\\repos\\livinparis\\ProjetGraphe\\ProjetGraphe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kisho\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj",
+        "projectUniqueName": "C:\\Users\\kisho\\source\\repos\\livinparis\\ProjetGraphe\\ProjetGraphe.csproj",
         "projectName": "ProjetGraphe",
-        "projectPath": "C:\\Users\\kisho\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj",
+        "projectPath": "C:\\Users\\kisho\\source\\repos\\livinparis\\ProjetGraphe\\ProjetGraphe.csproj",
         "packagesPath": "C:\\Users\\kisho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kisho\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\obj\\",
+        "outputPath": "C:\\Users\\kisho\\source\\repos\\livinparis\\ProjetGraphe\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kisho\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -79,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

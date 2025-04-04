@@ -125,7 +125,7 @@ using MySql.Data.MySqlClient;
                 string adresse = reader.GetString(3);
                 decimal montant = reader.GetDecimal(4);
 
-                Console.WriteLine($"{id} - {nom} {prenom} | {adresse} | Total achats : {montant} €");
+                Console.WriteLine($"{id} - {nom} {prenom}  {adresse} | Total achats : {montant}");
             }
         Console.WriteLine("-------------------------------------------");
     }
