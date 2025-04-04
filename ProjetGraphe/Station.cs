@@ -55,5 +55,17 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
              
         }
 
+        public int LigneCommune(Station stationB)
+        {
+            foreach (int ligneA in this.ListeDesLignes)
+            {
+                foreach (int ligneB in stationB.ListeDesLignes)
+                {
+                    if (ligneA == ligneB) { return ligneA; }
+                }
+            }
+            return -1;
+        }
+
     }
 }
