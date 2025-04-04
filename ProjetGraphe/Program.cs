@@ -1,5 +1,7 @@
 ﻿using GraphVisualization;
 using System.Diagnostics;
+using System;
+using MySql.Data.MySqlClient;
 
 namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 {
@@ -23,12 +25,19 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             //GraphViewModel Graphe = new GraphViewModel(Karaté.Matrix);
             //Graphe.GenerationImage(Karaté.Matrix);
 
-            Graphe<Station> PlanMétro = new Graphe<Station>("Plan métro", "MetroParis feuille 1.csv", "Métro paris feuill2 v2.csv");
-            PlanMétro.AfficheMatrice();
-            //PlanMétro.VérifLien();
-            var stations = GraphViewModel.ChargerStationsDepuisCSV("MetroParis feuille 1.csv");
-            GraphViewModel Graphe = new GraphViewModel(stations,PlanMétro.Matrix);   
-            Graphe.GenerationImage(stations, PlanMétro.Matrix);
+            //Graphe<Station> PlanMétro = new Graphe<Station>("Plan métro", "MetroParis feuille 1.csv", "Métro paris feuill2 v2.csv");
+            //PlanMétro.AfficheMatrice();
+            ////PlanMétro.VérifLien();
+            //var stations = GraphViewModel.ChargerStationsDepuisCSV("MetroParis feuille 1.csv");
+            //GraphViewModel Graphe = new GraphViewModel(stations,PlanMétro.Matrix);   
+            //Graphe.GenerationImage(stations, PlanMétro.Matrix);
+
+
+
+
+
+
+            new Affichage();
         }
     }
 }
