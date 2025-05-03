@@ -4,20 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
+namespace TEST_Projet_Livin_Paris
 {
-    public class Lien<T>
+    internal class Lien<T>
     {
-        public Noeud<T> noeudDépart;
-        public Noeud<T> noeudArrivé;
-        public int tempsTrajet;
 
-        public Lien(Noeud<T> noeudA, Noeud<T> noeudB)
+
+        public Noeud<T> NoeudDépart;
+        public Noeud<T> NoeudArrivée;
+        public int Poids;
+
+        public Lien(Noeud<T> noeudDépart, Noeud<T> noeudArrivée, int poid)
         {
-            this.noeudDépart = noeudA;
-            this.noeudArrivé = noeudB;
+            this.NoeudDépart = noeudDépart;
+            this.NoeudArrivée = noeudArrivée;
+            this.Poids = poid;
+        }
+        public string toString()
+        {
+            string a = NoeudDépart.GetLibStation();
+            string b = NoeudArrivée.GetLibStation();
+
+            return (a + " --> " + b);
         }
 
-        
     }
 }

@@ -1,264 +1,384 @@
-﻿using Microsoft.VisualBasic;
-using QuickGraph;
-using QuickGraph.Algorithms.MaximumFlow;
+﻿using ProjetGraphe;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using static System.Collections.Specialized.BitVector32;
 
-namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
+namespace TEST_Projet_Livin_Paris
 {
-    public class Graphe<T>
+    internal class Graphe<T>
     {
-        private string nom_de_graphe = "";
-        private int[,] AdjencyMatrix = new int[,] { };/// matrice d'adjacence
-
-        private int taille = 0;/// nombre d'arêtes
-        private int ordre = 0;/// nombre de sommets/noeuds
-
-        private List<Noeud<T>> ListeDeNoeuds = new List<Noeud<T>>();
-
-
-
-        public int[,] Matrix
+        public int[,] MatriceAdjacence;
+        public Dictionary<int, Noeud<T>> DictionnaireDeNoeuds;
+        public Graphe(string filename1, string filename2)
         {
-            get { return AdjencyMatrix; }
-            set { AdjencyMatrix = value; }
-        }
-
-        public Graphe(string nom, string filename1, string filename2)
-        {
-            this.nom_de_graphe = nom;
-            ListeDeNoeuds = new List<Noeud<T>>();
-
-            StreamReader sr = new StreamReader(filename1);
-            sr.ReadLine(); // Ignore la première ligne 
-
-            string line = sr.ReadLine();
-            while (line != null)
+            DictionnaireDeNoeuds = new Dictionary<int, Noeud<T>>();
+            using (var sr = new StreamReader(filename1, Encoding.UTF8))  // Utilisation du StreamReader avec encodage UTF-8
             {
-                string[] colonne = line.Split(';');
-
-
-                // Vérification du nombre de colonnes (évite IndexOutOfRangeException)
-                if (colonne.Length < 7)
+                sr.ReadLine();
+                string line = sr.ReadLine();
+                while (line != null)
                 {
-                    Console.WriteLine($"Ligne ignorée : {line} (données incomplètes)");
-                    line = sr.ReadLine();
-                    continue;
-                }
-
-                // Conversion de ID Station
-                int IdStation = Convert.ToInt32(colonne[0]);
-                if (int.TryParse(colonne[1], out int LibelleLigne))
-                {
-                    //Console.WriteLine($"Conversion réussie : {LibelleLigne}");
-                }
-                else
-                {
-                    Console.WriteLine($"Erreur de conversion : '{colonne[1]}' n'est pas un entier valide.");
-                }
-
-                string LibelleStation = colonne[2];
-                double Longitude = Convert.ToDouble(colonne[3], CultureInfo.InvariantCulture);/// CultureInfo.Invariant permet de convertir en double peut importante si le séparateur décimal est un point ou une virgule
-                double Latitude = Convert.ToDouble(colonne[4], CultureInfo.InvariantCulture);
-
-                // Création d'un objet station
-                Station station = new Station(IdStation, LibelleLigne, LibelleStation, Longitude, Latitude);
-
-                // Création d'un noeud générique dans lequel on met une station qui dérive de T
-                Noeud<T> noeud = new Noeud<T>(IdStation, (T)(object)station);
-                if (noeud.element is Station stationElement)
-                {
-                    stationElement.AddLigne(LibelleLigne);
-                }
-                else
-                {
-                    Console.WriteLine("Le type de noeud.element n'est pas Station.");
-                }
-
-                ListeDeNoeuds.Add(noeud);
-
-                line = sr.ReadLine(); // Lire la ligne suivante
-            }
-
-            AddArcs(filename2);
-            SuppDoublons();
-
-            AdjencyMatrix = MatriceAdjacence();
-
-            //foreach (Noeud<T> noeud in ListeDeNoeuds)
-            //{
-            //    if (noeud.element is Station stationElement)
-            //    {
-            //        Console.WriteLine(stationElement.toString() + "hehe            " + stationElement.ListeDesLignes.Count());
-            //    }
-
-            //}
-
-            //SuppDoublons(); // on supprime et fusionne les stations en doublons
-            sr.Close();
-            foreach (Noeud<T> noeud in ListeDeNoeuds)
-            {
-                if (noeud.element is Station stationElement)
-                {
-                    Console.WriteLine(stationElement.StationtoString());
-                }
-            }
-
-
-        }
-
-
-        public void AddArcs(string filename2)
-        {/// on lit la feuille n°2 qui contient les arcs
-            StreamReader Lecteur = new StreamReader(filename2);
-            Lecteur.ReadLine(); // Ignore la première ligne 
-            int count = 0;
-            int countNULL = 0;
-            string line = Lecteur.ReadLine();
-            while (line != null)
-            {
-                string[] colonne = line.Split(';');
-
-                int stationID = Convert.ToInt32(colonne[0]);
-                string stationLibelle = colonne[1];
-                int IDprécédent = 0;
-                int IDSuivant = 0;
-                int tempsTrajet = 0;
-
-                if (colonne[2] != "" && (colonne[2])[0] !='u')
-                {
-                    IDprécédent = Convert.ToInt32(colonne[2]);
-                }
-                if (colonne[3] != "" && (colonne[3])[0] != 'u')
-                {
-                    IDSuivant = Convert.ToInt32(colonne[3]);
-                }
-                if (colonne[4] == null || colonne[4] == "")
-                {
-                    Random random = new Random();
-                    int randomNumber = random.Next(1, 6);
-                    tempsTrajet = 6;
-                    countNULL++;
-                }
-                if (colonne[4] != "" && colonne[4] != null)
-                {
-                    tempsTrajet = Convert.ToInt32(colonne[4]);
-                    count++;
-                }
-                //Console.Write("    col4 :|" + colonne[4]+" et t:|"+ tempsTrajet);
-
-                if (colonne[5] != "")
-                {
-                    int tempsChangement = Convert.ToInt32(colonne[5]);
-
-                }
-
-                Noeud<T> Station = ListeDeNoeuds[stationID - 1];
-                Noeud<T> StationPrécédente = null;
-                Noeud<T> StationSuivante = null;
-                if (IDprécédent > 0)
-                {
-                    StationPrécédente = ListeDeNoeuds[IDprécédent - 1];
-                }
-                if (IDSuivant < 332 && IDSuivant > 2)
-                {
-
-                    StationSuivante = ListeDeNoeuds[IDSuivant - 1];
-                }
-
-                if (StationPrécédente != null && Station.element is Station stationElmnt && StationPrécédente.element is Station stationElmntPré)
-                {
-                    Console.Write("station pré" + StationPrécédente.AfficheElement());
-                    Console.WriteLine("station " + Station.AfficheElement());
-                    if (stationElmnt.ListeDesLignes[0] == stationElmntPré.ListeDesLignes[0])
+                    string[] colonnes = line.Split(';');
+                    int IdStation = -1;
+                    if (colonnes[0] != null && colonnes[0].Length > 0)
                     {
-                        Console.Write("station pré" + StationPrécédente.AfficheElement());
-                        Console.WriteLine("station " + Station.AfficheElement() + "STOP");
-
-                        Lien<T> LienE = new Lien<T>(StationPrécédente, Station);
-                        LienE.tempsTrajet = tempsTrajet;
-                        Station.relationsEntrantes.Add(LienE);
-                        //Console.WriteLine(" temps de trajet entrant" +LienE.tempsTrajet);
-
-
+                        IdStation = Convert.ToInt32(colonnes[0]);
                     }
-
-                }
-
-                if (StationSuivante != null && Station.element is Station stationElmnt1 && StationSuivante.element is Station stationElmntSui)
-                {
-
-                    if (stationElmnt1.ListeDesLignes[0] == stationElmntSui.ListeDesLignes[0])
+                    if (colonnes[0] == null || colonnes[0].Length <= 0)
                     {
-                        Lien<T> LienS = new Lien<T>(Station, StationSuivante);
-                        LienS.tempsTrajet = tempsTrajet;
-                        Station.relationsSortantes.Add(LienS);
-                        //Console.WriteLine(" temps de trajet sortant" +LienS.tempsTrajet);
+                        Console.WriteLine("colonnes[0] est null ou vide");
                     }
-
-                }
-
-
-
-                line = Lecteur.ReadLine(); // Lire la ligne suivante
-            }
-            Lecteur.Close();
-            Console.WriteLine("nombre totale de liens : !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + count + " et null" + countNULL);
-        }
-
-        public void SuppDoublons()
-        {
-            foreach (Noeud<T> noeudA in ListeDeNoeuds)
-            {
-                foreach (Noeud<T> noeudB in ListeDeNoeuds)
-                {
-                    if (noeudA.element is Station SA && noeudB.element is Station SB)
+                    float LibLigne = 0;
+                    if (colonnes[1].Contains("bis"))
                     {
-                        if (SA.Id != SB.Id && SB.LibelleStation == SA.LibelleStation)
+                        int indexBis = colonnes[1].IndexOf("bis");
+                        string numLigneTemp = colonnes[1].Substring(0, indexBis).Trim();
+                        if (float.TryParse(numLigneTemp, out float a))
                         {
-                            string LA = String.Join(" ", SA.ListeDesLignes);
+                            a += 0.5f;
+                            LibLigne = a;
+                        }
+                        else
+                        {
+                            Console.WriteLine("erreur à la ligne bis : " + colonnes[1]);
+                            LibLigne = -1;
+                        }
+                    }
+                    string LibStation = null;
+                    if (colonnes[2] != null && colonnes[2].Length > 0)
+                    {
+                        LibStation = colonnes[2];
 
-                            foreach (Lien<T> lienE in noeudB.relationsEntrantes)
-                            {
-                                if (!noeudA.relationsEntrantes.Contains(lienE))
-                                {
-                                    noeudA.relationsEntrantes.Add(lienE);
-                                }
+                    }
+                    if (LibStation == null) { Console.WriteLine("Libstation est null !! -----------------------------------------------"); }
+                    if (colonnes[2] == null) { Console.WriteLine("colonnes[2] est null !! -----------------------------------------------"); }
 
-                            }
-                            foreach (Lien<T> lienS in noeudB.relationsSortantes)
-                            {
-                                if (!noeudA.relationsSortantes.Contains(lienS))
-                                {
-                                    noeudA.relationsSortantes.Add(lienS);
+                    double Longitude = 0;
+                    if (colonnes[3] != null && colonnes[3].Length > 0)
+                    {
+                        Longitude = Convert.ToDouble(colonnes[3], CultureInfo.InvariantCulture);
+                    }
+                    double Latitude = 0;
+                    if (colonnes[4] != null && colonnes[4].Length > 0)
+                    {
+                        Latitude = Convert.ToDouble(colonnes[4], CultureInfo.InvariantCulture);
+                    }
 
-                                }
+                    Station station = new Station(IdStation, LibLigne, LibStation, Longitude, Latitude);
+                    Noeud<T> noeud = new Noeud<T>(IdStation, (T)(object)station);
+                    if (noeud.element is Station stationElement)
+                    {
+                        stationElement.ListeLibelleLigne.Add(LibLigne);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Le type de noeud.element n'est pas Station.");
+                    }
+                    DictionnaireDeNoeuds.Add(IdStation, noeud);
+                    line = sr.ReadLine();
 
-                            }
-                            SA.AddLigne(SB.ListeDesLignes[0]);
+                }
+            }
+            AjouteArcs(filename2);
+            SupprimeDoublons();
+            VérifConcordanceId();
+            MatriceAdjacence = CréerMatriceAdjacence(filename1, 333);
 
-                            //string LB = String.Join(" ", SB.ListeDesLignes);
-                            //Console.WriteLine($" lignes de A : {LA} et lignes de B : {LB}");
-                            //string AB = String.Join("", SA.ListeDesLignes);
-                            //Console.WriteLine($"ligne finale : ");
-                            //foreach (int ligneID in SA.ListeDesLignes) { Console.WriteLine(ligneID); }
+
+        }
+
+
+        public void AjouteArcs(string filename)
+        {
+            try
+            {
+                if (!File.Exists(filename))
+                {
+                    Console.WriteLine($"Le fichier '{filename}' n'existe pas.");
+                    return;
+                }
+
+                using (StreamReader sr = new StreamReader(filename))
+                {
+                    sr.ReadLine();
+                    string line = sr.ReadLine();
+                    while (line != null)
+                    {
+                        string[] colonnes = line.Split(';');
+                        int IdStation = -1;
+                        if (colonnes[0] != null && colonnes[0] != "" && int.TryParse(colonnes[0], out IdStation))
+                        {
+                            IdStation = Convert.ToInt32(colonnes[0]);
+                        }
+                        else
+                        {
+                            // Erreur : valeur non convertible
+                            Console.WriteLine("Impossible de convertir la valeur : " + colonnes[0]);
                         }
 
+                        string LibStation = colonnes[1];
+                        int IdStationPrécédente = -1;
+                        if (colonnes[2] != null && colonnes[2].Length > 0)
+                        {
+                            IdStationPrécédente = int.Parse(colonnes[2]);
+                        }
+                        int IdStationSuivante = -1;
+                        if (colonnes[3] != null && colonnes[3].Length > 0)
+                        {
+                            IdStationSuivante = int.Parse(colonnes[3]);
+                        }
+                        int TempsEntre2Stations = 2;
+                        int TempsDeChangement = 2;
+                        if (!DictionnaireDeNoeuds.ContainsKey(IdStation)) { Console.WriteLine("Ne contient pas station n°" + IdStation); }
+                        //if(!DictionnaireDeNoeuds.ContainsKey(IdStationPrécédente)) { Console.WriteLine("Ne contient pas station précédente n°" + IdStationPrécédente+LibStation); }
+                        //if(!DictionnaireDeNoeuds.ContainsKey(IdStationSuivante)){ Console.WriteLine("Ne contient pas station suivante n°" + IdStationSuivante + LibStation); }
+
+                        //Console.WriteLine("Libell station : " + LibStation);
+
+                        if (IdStationPrécédente != -1 && IdStation != 0 && DictionnaireDeNoeuds.ContainsKey(IdStation) && DictionnaireDeNoeuds.ContainsKey(IdStationPrécédente))
+                        {
+                            Noeud<T> noeudStation = DictionnaireDeNoeuds[IdStation];
+                            Lien<T> lienSortantPrécédent = new Lien<T>(DictionnaireDeNoeuds[IdStation], DictionnaireDeNoeuds[IdStationPrécédente], TempsEntre2Stations);
+                            Lien<T> lienEntrantPrécédent = new Lien<T>(DictionnaireDeNoeuds[IdStationPrécédente], DictionnaireDeNoeuds[IdStation], TempsEntre2Stations);
+                            if (!noeudStation.ArcsEntrants.Contains(lienEntrantPrécédent))
+                            {
+                                noeudStation.ArcsEntrants.Add(lienEntrantPrécédent);
+                            }
+
+                            if (!noeudStation.ArcsSortants.Contains(lienSortantPrécédent))
+                            {
+                                noeudStation.ArcsSortants.Add(lienSortantPrécédent);
+                            }
+
+
+                        }
+                        if (IdStationSuivante != -1 && IdStation != 0 && DictionnaireDeNoeuds.ContainsKey(IdStation) && DictionnaireDeNoeuds.ContainsKey(IdStationSuivante))
+                        {
+                            Noeud<T> noeudStation = DictionnaireDeNoeuds[IdStation];
+                            Lien<T> lienSortantSuivant = new Lien<T>(DictionnaireDeNoeuds[IdStation], DictionnaireDeNoeuds[IdStationSuivante], TempsEntre2Stations);
+                            Lien<T> lienEntrantSuivant = new Lien<T>(DictionnaireDeNoeuds[IdStationSuivante], DictionnaireDeNoeuds[IdStation], TempsEntre2Stations);
+                            if (!noeudStation.ArcsEntrants.Contains(lienEntrantSuivant))
+                            {
+                                noeudStation.ArcsEntrants.Add(lienEntrantSuivant);
+                            }
+                            if (!noeudStation.ArcsSortants.Contains(lienSortantSuivant))
+                            {
+                                noeudStation.ArcsSortants.Add(lienSortantSuivant);
+                            }
+
+                        }
+                        else
+                        {
+                            //Console.WriteLine($"Une des stations (IdStation : {IdStation}, IdStationPrécédente : {IdStationPrécédente}, IdStationSuivante : {IdStationSuivante}) n'existe pas dans le dictionnaire.");
+                        }
+
+                        line = sr.ReadLine(); // Lire la ligne suivante
                     }
                 }
             }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine($"Erreur : Le fichier '{filename}' est introuvable. Détails : {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Erreur de lecture du fichier '{filename}'. Détails : {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur inattendue s'est produite. Détails : {ex.Message}");
+            }
+        }
+        public bool VérifConcordanceId()
+        {
+            foreach (Noeud<T> noeud in DictionnaireDeNoeuds.Values)
+            { /// vérifie que les Indices du noeud et de sa stations sont les memes
+                if (noeud.element is Station station)
+                {
+                    if (noeud.Id != station.Id)
+                    {
+                        Console.WriteLine($"ERREURl'id du noeud : {noeud.Id} n'es pas le meme que sa station!'");
+                        return false;
+                    }
+
+                }
+
+            }
+            Console.WriteLine("Tous les id des noeud et de leur station sont concordant.");
+            return true;
 
         }
+        public void SupprimeDoublons()
+        {
+            List<int> idsSupprimes = new List<int>(); /// Liste pour garder une trace des Id des noeuds à supprimer
+            foreach (Noeud<T> noeudA in DictionnaireDeNoeuds.Values)
+            {
+                foreach (Noeud<T> noeudB in DictionnaireDeNoeuds.Values)
+                {
+                    if (noeudA.Id != noeudB.Id && noeudA.GetLibStation() == noeudB.GetLibStation() && noeudB is Station stationB)
+                    {
+                        foreach (Lien<T> LienE in noeudB.ArcsEntrants)
+                        {
+                            noeudA.ArcsEntrants.Add(LienE);
+                        }
+                        foreach (Lien<T> LienS in noeudB.ArcsSortants)
+                        {
+                            noeudA.ArcsSortants.Add(LienS);
+                        }
+                        foreach (float ligne in stationB.ListeLibelleLigne)
+                        {
+                            noeudA.AddLigne(ligne);
+                        }
+                        /// on supprime alors le noeud B 
+                        idsSupprimes.Add(noeudB.Id);
+                    }
+                }
+            }
+            /// Suppression des noeuds marqués
+            foreach (int id in idsSupprimes)
+            {
+                Console.WriteLine($"Suppressioin de la station en double : {DictionnaireDeNoeuds[id]}");
+                DictionnaireDeNoeuds.Remove(id);
+            }
+        }
+        public int[,] CréerMatriceAdjacence(string filename, int size)
+        {
+            int count = 0;
+
+            int[,] Matrice = new int[size, size];
+            foreach (Noeud<T> noeud in DictionnaireDeNoeuds.Values)
+            {
+                if (noeud != null)
+                {
+                    count++;
+                    if (noeud.ArcsEntrants != null)
+                    {
+                        foreach (Lien<T> lienE in noeud.ArcsEntrants)
+                        {
+                            Matrice[lienE.NoeudArrivée.Id, lienE.NoeudDépart.Id] = lienE.Poids;
+                            Matrice[lienE.NoeudDépart.Id, lienE.NoeudArrivée.Id] = lienE.Poids;
+                            //Console.WriteLine(lienE.toString());
+                            if (lienE.NoeudDépart.element is Station nodeElementD && lienE.NoeudArrivée.element is Station nodeElementA)
+                            {
+                                if (nodeElementD.Id != lienE.NoeudDépart.Id || lienE.NoeudArrivée.Id != nodeElementA.Id)
+                                {
+                                    Console.WriteLine("error");
+                                }
+                            }
+                        }
+                    }
+                    if (noeud.ArcsEntrants == null)
+                    {
+                        Console.WriteLine(" Problème génération matrice ArcsEntrant est nulle");
+                    }
+                    if (noeud.ArcsSortants != null)
+                    {
+                        foreach (Lien<T> lienS in noeud.ArcsSortants)
+                        {
+                            Matrice[lienS.NoeudArrivée.Id, lienS.NoeudDépart.Id] = lienS.Poids;
+                            Matrice[lienS.NoeudDépart.Id, lienS.NoeudArrivée.Id] = lienS.Poids;
+                            //Console.WriteLine($" NoeudDépart.Id : {lienS.NoeudDépart.Id} --> NoeudArrivée.Id : {lienS.NoeudArrivée.Id} : {lienS.Poids}");
+                            //Console.WriteLine(lienS.toString());
+                            if (lienS.NoeudDépart.element is Station nodeElementD && lienS.NoeudArrivée.element is Station nodeElementA)
+                            {
+                                if (nodeElementD.Id != lienS.NoeudDépart.Id || lienS.NoeudArrivée.Id != nodeElementA.Id)
+                                {
+                                    Console.WriteLine("error2");
+                                }
+                            }
+                        }
+                    }
+                    if (noeud.ArcsSortants == null)
+                    {
+                        //Console.WriteLine(" Problème génération matrice ArcsSortant est nulle");
+                    }
+
+                }
+
+            }
+            Console.WriteLine("count de noeud e la matrice :" + count);
+            return Matrice;
+
+        }
+        public void AfficherMatrice()
+        {
+            // Obtenir les dimensions de la matrice
+            int lignes = MatriceAdjacence.GetLength(0);
+            int colonnes = MatriceAdjacence.GetLength(1);
+
+            // Afficher un en-tête pour les colonnes
+            Console.Write("    ");
+            for (int j = 0; j < colonnes; j++)
+            {
+                Console.Write($"{j,3} ");
+            }
+            Console.WriteLine();
+
+            // Afficher une ligne de séparation
+            Console.Write("    ");
+            for (int j = 0; j < colonnes; j++)
+            {
+                Console.Write("----");
+            }
+            Console.WriteLine();
+
+            // Afficher chaque ligne avec son indice
+            for (int i = 0; i < lignes; i++)
+            {
+                Console.Write($"{i,2} | ");
+                for (int j = 0; j < colonnes; j++)
+                {
+                    Console.Write($"{MatriceAdjacence[i, j],3} ");
+                }
+                Console.WriteLine();
+            }
+        }
+        public void LireMatriceAdjacence()
+        {
+            for (int i = 0; i < MatriceAdjacence.GetLength(0); i++)
+            {
+                for (int j = 0; j < MatriceAdjacence.GetLength(1); j++)
+                {
+                    if (MatriceAdjacence[i, j] != 0)
+                    {
+                        DictionnaireDeNoeuds.TryGetValue(i, out var Nodei);
+                        DictionnaireDeNoeuds.TryGetValue(j, out var Nodej);
+
+                        Console.WriteLine($"{Nodei.Id}: {Nodei.GetLibStation()} <---> {Nodej.Id} : {Nodej.GetLibStation()}");
+                    }
+                }
+            }
+        }
+        public void ListerLesLiensDeNoeud(string NomDeNoeud)
+        {
+            foreach (Noeud<T> station in DictionnaireDeNoeuds.Values)
+            {
+                if (station.element is Station elementstation)
+                {
+                    if (elementstation.LibelleStation == NomDeNoeud)
+                    {
+                        Console.Write($"Lien entrant dans {elementstation.LibelleStation} : ");
+                        foreach (Lien<T> Lien in station.ArcsEntrants)
+                        {
+                            Console.Write(Lien.toString() + "      ");
+                        }
+                        Console.WriteLine();
+                        Console.Write("lien sortant : ");
+                        foreach (Lien<T> Lien in station.ArcsSortants)
+                        {
+                            Console.Write(Lien.toString() + "      ");
+                        }
+                        Console.WriteLine();
+                    }
+                }
+            }
+        }
+
 
         public void PCC(int start)
         {
@@ -287,9 +407,9 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 
                 for (int v = 0; v < size; v++)
                 {
-                    if (!visited[v] && AdjencyMatrix[u, v] != int.MaxValue && distances[u] != int.MaxValue && distances[u] + AdjencyMatrix[u, v] < distances[v])
+                    if (!visited[v] && MatriceAdjacence[u, v] != int.MaxValue && distances[u] != int.MaxValue && distances[u] + MatriceAdjacence[u, v] < distances[v])
                     {
-                        distances[v] = distances[u] + AdjencyMatrix[u, v];
+                        distances[v] = distances[u] + MatriceAdjacence[u, v];
                     }
                 }
             }
@@ -314,9 +434,9 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 
         static int LigneCommune(Station stationA, Station stationB)
         {
-            foreach (int ligneA in stationA.ListeDesLignes)
+            foreach (int ligneA in stationA.ListeLibelleLigne)
             {
-                foreach (int ligneB in stationB.ListeDesLignes)
+                foreach (int ligneB in stationB.ListeLibelleLigne)
                 {
                     if (ligneA == ligneB) { return ligneA; }
                 }
@@ -337,279 +457,6 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             return null;
         }
 
-        public int[,] MatriceAdjacence()
-        {
-            int[,] matrice = new int[333, 333];
-            foreach (Noeud<T> noeud in ListeDeNoeuds)
-            {
-                foreach (Lien<T> lien in noeud.relationsEntrantes)
-                {
-                    matrice[lien.noeudDépart.noeud_id, lien.noeudArrivé.noeud_id] = (lien.tempsTrajet);
-                    matrice[lien.noeudArrivé.noeud_id, lien.noeudDépart.noeud_id] = (lien.tempsTrajet);
-                }
-                foreach (Lien<T> lien in noeud.relationsSortantes)
-                {
-                    matrice[lien.noeudDépart.noeud_id, lien.noeudArrivé.noeud_id] = (lien.tempsTrajet);
-                    matrice[lien.noeudArrivé.noeud_id, lien.noeudDépart.noeud_id] = (lien.tempsTrajet);
-                }
-
-            }
-            return matrice;
-        }
-        public void VérifLien()
-        {
-            foreach (Noeud<T> noeud in ListeDeNoeuds)
-            {
-                foreach (Lien<T> lien in noeud.relationsEntrantes)
-                {
-                    Console.WriteLine(lien.noeudArrivé.noeud_id + " temps de trajet : " + lien.tempsTrajet);
-                }
-                foreach (Lien<T> lien in noeud.relationsSortantes)
-                {
-                    Console.WriteLine(lien.noeudArrivé.noeud_id + " temps de trajet : " + lien.tempsTrajet);
-                }
-
-            }
-        }
-
-        public static int CalculerTemps(double distance)
-        {
-            int vitesse = 25; // la vitesse moyenne d'un métro est de 25 km/h
-            return Convert.ToInt32(distance / vitesse);
-        }
-
-        public static double CalculerDistance(double latitude1, double longitude1, double latitude2, double longitude2)
-        {
-            // Conversion des degrés en radians
-            double rayonTerre = 6371;
-            double phi1 = DegresEnRadians(latitude1);
-            double phi2 = DegresEnRadians(latitude2);
-            double deltaPhi = DegresEnRadians(latitude2 - latitude1);
-            double deltaLambda = DegresEnRadians(longitude2 - longitude1);
-
-            // Formule de Haversine
-            double a = Math.Sin(deltaPhi / 2) * Math.Sin(deltaPhi / 2) +
-                       Math.Cos(phi1) * Math.Cos(phi2) *
-                       Math.Sin(deltaLambda / 2) * Math.Sin(deltaLambda / 2);
-
-            double c = 2 * Math.Asin(Math.Sqrt(a));
-
-            // Distance finale
-            return rayonTerre * c;
-        }
-
-        private static double DegresEnRadians(double degres)
-        {
-            return degres * Math.PI / 180.0;
-        }
-
-
-
-        /*
-        public Graphe(string nom,string filename) 
-        {
-            this.nom_de_graphe = nom;
-            this.filename = filename;
-            
-            StreamReader sr = new StreamReader(this.filename);
-            sr.ReadLine();
-            string[] relation = new string[0];
-            int b = 0;
-            string line = sr.ReadLine();
-            while (line!=null)
-            {              
-                if (line.Length > 0 && line[0] != '%')
-                {                   
-                    b++;
-                }
-                if(b == 1)
-                {
-                    relation = line.Split(' ');
-                    this.ordre = Convert.ToInt32(relation[0]);
-                    graphe = new Noeud<T>[ordre];
-                    matrix = new int[ordre, ordre];/// on sait que la matrice est carré et symétrique car les relations entre les membres sont réciproques
-                }
-                if (b>1)
-                {
-                    relation = line.Split(' ');
-                    int A = Convert.ToInt32(relation[0]); /// noeud A
-                    int B = Convert.ToInt32(relation[1]); /// noeud B
-                    this.matrix[A-1 , B-1 ] = 1;
-                    Console.WriteLine($"A :{A} , B :{B} ");
-                    this.matrix[(B-1) , (A-1)] = 1;
-                    taille++;
-                }
-
-                line = sr.ReadLine();
-            }
-            CréerGraphe();
-            sr.Close();
-        }
-        */
-
-        //public void CréerGraphe()
-        //{
-
-        //    for(int i=0 ; i < matrix.GetLength(0) ; i++)
-        //    {
-        //        Noeud<Station> X = new Noeud<Station>(i);///on créer un noeud n°i
-        //        ListeDeNoeuds[i] = X; /// on ajoute ce noeud au tableau de noeud (le graphe)
-
-        //    }
-        //    for (int i = 0; i < matrix.GetLength(0); i++)
-        //    {
-        //        for (int j = 0; j < matrix.GetLength(1); j++)
-        //        {
-        //            if (matrix[i, j] == 1)
-        //            {
-        //                this.ListeDeNoeuds[i].Relations.Add(ListeDeNoeuds[j]);
-
-        //            }
-        //        }
-
-        //    }
-
-
-        //}
-
-
-
-
-        //public void ParcoursEnLargeur(Noeud<Station> ActualNode)
-        ///// méthode itérative de parcours
-        /////Actual Node est le noeud actuel ou en est l'algorithme de parcours il commence par le noeud renseigné par l'utiliisateur ( j'ai commencé au noeud 1)
-        //{///J'utilise une File (propriété FIFO nécéssaire pour ce type de parcours)
-        //    Console.WriteLine("Parcours en largeur d'abord du graphe ");
-        //    Queue<Noeud<Station>> File = new Queue<Noeud<Station>> ();
-        //    List<int> IdNodeIsExplored = new List<int>();
-
-        //    File.Enqueue(ListeDeNoeuds[ActualNode.element.id]);
-        //    int count = 0;
-        //    while (File.Count != 0)
-        //    {
-        //        ActualNode= (File.Dequeue());
-        //        Console.WriteLine("Noeud n°" + ((ActualNode.Noeud_Id)+1));
-
-        //        foreach (Noeud<Station> NoeudVoisin in ActualNode.Relations) 
-        //        {
-        //            if(!IdNodeIsExplored.Contains(NoeudVoisin.Noeud_Id))
-        //            {
-        //                File.Enqueue(NoeudVoisin);
-        //                IdNodeIsExplored.Add(NoeudVoisin.Noeud_Id);
-        //            }
-        //            if (IdNodeIsExplored.Contains(NoeudVoisin.Noeud_Id))
-        //            {
-        //                count++;
-        //            }
-
-
-        //        }             
-        //    }
-        //    if (IdNodeIsExplored.Count == this.ordre) Console.WriteLine($"Le graphe {nom_de_graphe} est connexe");
-        //    if (IdNodeIsExplored.Count < this.ordre) Console.WriteLine($"Le graphe {nom_de_graphe} n'est pas connexe");
-        //    if (count > 0) Console.WriteLine($"Le graphe contient des cycles");
-        //    Console.WriteLine(" end ");          
-
-        //}
-
-        //public void ParcoursEnProfondeur (Noeud<T> ActualNode)/// méthode itérative de parcours
-        //{///Actual Node est le noeud actuel ou en est l'algorithme de parcours il commence par le noeud renseigné par l'utiliisateur ( j'ai commencé au noeud 1)
-        //    ///J'utilise une Pile (propriété FILO nécéssaire pour ce type de parcours)
-        //    Console.WriteLine("Parcours en profondeur d'abord du graphe ");
-        //    Stack<Noeud<T>> Pile = new Stack<Noeud<T>>();
-        //    Pile.Push(ActualNode);
-        //    List<int> IdNodeIsExplored = new List<int>();
-        //    while (Pile != null && Pile.Count >0)
-        //    {
-        //        Console.WriteLine("Noeud n°" + ((ActualNode.Noeud_Id) + 1));
-        //        IdNodeIsExplored.Add(ActualNode.Noeud_Id);
-        //        foreach (Noeud<T> Node in ActualNode.Relations)
-        //        {
-        //            if (!IdNodeIsExplored.Contains(Node.Noeud_Id) && !Pile.Contains(Node))
-        //            {
-        //                Pile.Push(Node);
-        //            }
-        //        }
-        //        ActualNode = Pile.Pop();               
-
-        //    }
-        //}
-
-        public void AfficheMatrice()
-        {
-            int count = 0;
-            for (int i = 0; i < AdjencyMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < AdjencyMatrix.GetLength(1); j++)
-                {
-                    int a = AdjencyMatrix[i, j];
-                    if (a != 0) { count++; }
-                    Console.Write(a + "  ");
-                }
-
-            }
-            Console.WriteLine(" LE compte lien matrice : " + count);
-        }
-
-
-        public void MatrixtoString()
-        {
-
-            for (int i = -1; i < AdjencyMatrix.GetLength(0); i++)
-            {
-                if (i > -1)
-                {
-                    if (i < 9)
-                    {
-                        Console.Write(" " + (i + 1) + "   ");
-                    }
-                    else
-                    {
-                        Console.Write((i + 1) + "   ");
-                    }
-                }
-                if (i == -1)
-                {
-                    Console.Write("   ");
-                }
-
-
-                for (int j = 0; j < AdjencyMatrix.GetLength(1); j++)
-                {
-                    if (i == -1)
-                    {
-                        if (j < 10)
-                        {
-                            Console.Write("  " + (j + 1));
-                        }
-                        else
-                        {
-                            Console.Write(" " + (j + 1));
-                        }
-                    }
-                    else
-                    {
-                        if (AdjencyMatrix[i, j] < 10)
-                        {
-                            Console.Write(AdjencyMatrix[i, j] + "  ");
-                        }
-                        else
-                        {
-                            Console.Write(AdjencyMatrix[i, j] + " ");
-                        }
-
-                    }
-
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-            Console.WriteLine($"Ci dessus la matrice du graphe :{nom_de_graphe} de taille {taille} et d'ordre {ordre}.");
-            Console.WriteLine();
-        }/// Affichage dans la console de la matrice d'adjacence
-
 
     }
-
-
 }

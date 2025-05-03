@@ -1,39 +1,33 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ProjetGraphe;
 using QuickGraph;
 using SkiaSharp;
-using System.Runtime.CompilerServices;
-using ProjetGraphe;
-using System.Globalization;
-
-
-/// Recherche faites avec l'ia Deepseek, la première étape était de savoir quelles étaients les bibliothèques utiles pour faire un graphe.
-/// Puis on a demandé comment faire un cercle pour afficher les noeuds dans cette forme pour que ce soit lisible
-/// A l'aide l'ia on a compris les différentes instructions pour déssiner les arètes et les noeuds
-/// Enfin on a demandé comment faire pour afficher l'image directement après l'exécutioin du code.
-/// Ce qui nous donne ceci :
-
-namespace GraphVisualization///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
+namespace TEST_Projet_Livin_Paris
 {
-    public class GraphViewModel
+    internal class GraphViewModel<T>
     {
-        public BidirectionalGraph<string, Edge<string>> Graph { get; private set; }   /// Graphe orienté représentant les stations et connexions.                                                                                   
-        private Dictionary<int, Station> stationsById;                                /// Dictionnaire liant les IDs aux objets Station.
+        public BidirectionalGraph<string, Edge<string>> SchémaDeGraphe { get; private set; }   /// Graphe orienté représentant les stations et connexions.
         private List<(string, string)> cheminSurligne = new();                       /// Liste des arêtes (nom des stations) formant le chemin à surligner.
         private string resumeChemin = "";                                           /// Texte affichant le résumé du chemin (stations + durée).
+        public Graphe<T> graphe;
 
 
-        public GraphViewModel(List<Station> stations, int[,] adjacencyMatrix)     /// Constructeur : initialise le graphe avec les stations et la matrice d'adjacence.
+
+
+        public GraphViewModel(List<Station> stations, int[,] adjacencyMatrix, Graphe<T> graphe)     /// Constructeur : initialise le graphe avec les stations et la matrice d'adjacence.
         {
-            Graph = new BidirectionalGraph<string, Edge<string>>();
-            stationsById = new Dictionary<int, Station>();
+            this.SchémaDeGraphe = new BidirectionalGraph<string, Edge<string>>();
+            this.graphe = graphe;
 
             for (int i = 0; i < stations.Count; i++)
             {
-                Station station = stations[i];
-                stationsById[station.Id] = station;
-                Graph.AddVertex(station.LibelleStation);
+                SchémaDeGraphe.AddVertex(stations[i].LibelleStation);
             }
 
             int size = adjacencyMatrix.GetLength(0);
@@ -43,14 +37,14 @@ namespace GraphVisualization///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_V
                 {
                     if (adjacencyMatrix[i, j] != 0 && i < stations.Count && j < stations.Count)
                     {
-                        Station stationA = stations[i];
-                        Station stationB = stations[j];
+                        Station stationA = stations[i - 1];
+                        Station stationB = stations[j - 1];
 
                         if (stationA.LigneCommune(stationB) != -1)
                         {
                             string srcName = stationA.LibelleStation;
                             string dstName = stationB.LibelleStation;
-                            Graph.AddEdge(new Edge<string>(srcName, dstName));
+                            SchémaDeGraphe.AddEdge(new Edge<string>(srcName, dstName));
                         }
                         else
                         {
@@ -59,37 +53,11 @@ namespace GraphVisualization///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_V
                     }
                 }
             }
-        }
+            string imagePath = "graph_output.png";
+            DrawGraph(imagePath);
 
-        public static List<Station> ChargerStationsDepuisCSV(string cheminFichier)      /// Charge les données des stations depuis un fichier CSV.
-        {
-            var stations = new List<Station>();
-            using (var reader = new StreamReader(cheminFichier, System.Text.Encoding.GetEncoding("iso-8859-1")))
-            {
-                string header = reader.ReadLine();
-                while (!reader.EndOfStream)
-                {
-                    string line = reader.ReadLine();
-                    var parts = line.Split(';');
-
-                    try
-                    {
-                        int id = int.Parse(parts[0]);
-                        int ligne = int.Parse(parts[1]);
-                        string libelleStation = parts[2];
-                        double longitude = double.Parse(parts[3], CultureInfo.InvariantCulture);
-                        double latitude = double.Parse(parts[4], CultureInfo.InvariantCulture);
-
-                        var station = new Station(id, ligne, libelleStation, longitude, latitude);
-                        stations.Add(station);
-                    }
-                    catch (Exception ex)
-                    {
-                        //Console.WriteLine($"Erreur de parsing à la ligne : {line} → {ex.Message}");
-                    }
-                }
-            }
-            return stations;
+            Console.WriteLine($"Image du graphe sauvegardée dans {imagePath}");
+            Process.Start(new ProcessStartInfo(imagePath) { UseShellExecute = true });
         }
 
         public void SetCheminSurligne(List<int> chemin, List<Station> stations, int[,] matriceAdjacence, List<int> idList)      /// Définit un chemin à surligner et calcule le temps total du trajet.
@@ -139,23 +107,41 @@ namespace GraphVisualization///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_V
                 double minLon = double.MaxValue, maxLon = double.MinValue;  /// Trouver les bornes géographiques pour adapter à l'image
                 double minLat = double.MaxValue, maxLat = double.MinValue;
 
-                foreach (var station in stationsById.Values)
+                foreach (Noeud<T> node in graphe.DictionnaireDeNoeuds.Values)
                 {
-                    minLon = Math.Min(minLon, station.Longitude);
-                    maxLon = Math.Max(maxLon, station.Longitude);
-                    minLat = Math.Min(minLat, station.Latitude);
-                    maxLat = Math.Max(maxLat, station.Latitude);
+                    //Console.WriteLine(" azertyuytrezae :" + node.ArcsEntrants[0].toString());
+
+                    if (node.element is Station station)
+                    {
+                        minLon = Math.Min(minLon, station.Longitude);
+                        maxLon = Math.Max(maxLon, station.Longitude);
+                        minLat = Math.Min(minLat, station.Latitude);
+                        maxLat = Math.Max(maxLat, station.Latitude);
+                        //Console.WriteLine(minLat+ " "+ maxLat+ " "+minLon+"  "+ maxLon);
+                    }
+                    else
+                    {
+                        Console.WriteLine("erreur vous essayer de dessiner un graphe avec autrechose que des Stations");
+                    }
+
+
                 }
 
                 Dictionary<string, SKPoint> positions = new();       /// Conversion des coordonnées GPS en coordonnées image
-                foreach (var station in stationsById.Values)
+
+                foreach (Noeud<T> node in graphe.DictionnaireDeNoeuds.Values)
                 {
-                    float x = (float)((station.Longitude - minLon) / (maxLon - minLon) * (width - 100) + 50);
-                    float y = (float)((1 - (station.Latitude - minLat) / (maxLat - minLat)) * (height - 100) + 50);
-                    positions[station.LibelleStation] = new SKPoint(x, y);
+                    if (node.element is Station station)
+                    {
+                        float x = (float)((station.Longitude - minLon) / (maxLon - minLon) * (width - 100) + 50);
+                        float y = (float)((1 - (station.Latitude - minLat) / (maxLat - minLat)) * (height - 100) + 50);
+                        positions[station.LibelleStation] = new SKPoint(x, y);
+
+                    }
+
                 }
 
-                foreach (var edge in Graph.Edges)   /// Dessin des arêtes
+                foreach (var edge in SchémaDeGraphe.Edges)   /// Dessin des arêtes
                 {
                     if (positions.ContainsKey(edge.Source) && positions.ContainsKey(edge.Target))
                     {
@@ -171,7 +157,8 @@ namespace GraphVisualization///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_V
                 }
                 /// Dessin des noeuds (stations)
                 using (var nodePaint = new SKPaint { Color = SKColors.SteelBlue, Style = SKPaintStyle.Fill })
-                using (var textPaint = new SKPaint { Color = SKColors.Black, TextSize = 16, TextAlign = SKTextAlign.Center })
+                //using (var textPaint = new SKPaint { Color = SKColors.Black, TextSize = 16, TextAlign = SKTextAlign.Center })
+                using (var textPaint = new SKPaint { Color = SKColors.Black, TextSize = 16, TextAlign = SKTextAlign.Center, Typeface = SKTypeface.FromFamilyName("Roboto") })
                 {
                     foreach (var kvp in positions)
                     {
@@ -199,20 +186,5 @@ namespace GraphVisualization///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_V
                 }
             }
         }
-
-        public void GenerationImage(List<Station> stations, int[,] matriceAdjacence)          /// Génére et affiche une image du graphe avec le chemin surligné (s'il y en a un).
-        {
-            GraphViewModel graph = new GraphViewModel(stations, matriceAdjacence);
-            graph.cheminSurligne = this.cheminSurligne;
-            graph.resumeChemin = this.resumeChemin;
-            string imagePath = "graph_output.png";
-            graph.DrawGraph(imagePath);
-
-            Console.WriteLine($"Graph image saved to {imagePath}");
-            Process.Start(new ProcessStartInfo(imagePath) { UseShellExecute = true });
-        }
-
     }
 }
-
-

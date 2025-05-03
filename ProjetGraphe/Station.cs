@@ -1,71 +1,54 @@
-﻿using GraphSharp.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
+namespace TEST_Projet_Livin_Paris
 {
-    public class Station 
+    internal class Station
     {
         public int Id;
-        public List<int> ListeDesLignes { get; set; }/// <summary>
-                                                     /// Liste de toutes les lignes qui passent par cette station
-                                                     /// </summary>
         public string LibelleStation;
+        public List<float> ListeLibelleLigne; /// oui float car on rajoute +0,5 pour distinguer les lignes bis des lignes clasiques
         public double Longitude;
         public double Latitude;
 
-        public Station( int id, int libelleLigne, string libelleStation, double longitutde, double latitude)
+        public Station(int id, List<float> libelleLigne, string libelleStation, double longitude, double latitude)
         {
-            this.Id = id;
-            ListeDesLignes = new List<int>();
-            AddLigne(libelleLigne);
+            Id = id;
             LibelleStation = libelleStation;
-            Longitude = longitutde;
+            ListeLibelleLigne = libelleLigne;
+            Longitude = longitude;
             Latitude = latitude;
         }
-        public bool AddLigne(int Ligne)
+        public Station(int id, float libelleLigne, string libelleStation, double longitude, double latitude)
         {
-            bool ans = false;
-            if(ListeDesLignes == null)
+            Id = id;
+            LibelleStation = libelleStation;
+            if (ListeLibelleLigne == null)
             {
-                Console.WriteLine("ligne est nulleee");
-                return ans;
+                //Console.WriteLine("Liste de ligne nulle : création d'une station");
+                ListeLibelleLigne = new List<float>();
+                ListeLibelleLigne.Add(libelleLigne);
             }
-
-            if(!ListeDesLignes.Contains(Ligne)) 
-            { ListeDesLignes.Add(Ligne);
-                ans = true;
-            }
-            return ans;                   
-
-        }
-
-        public string StationtoString()
-        {
-            string listedlignes = "";
-            foreach (int ligne in ListeDesLignes) {
-                listedlignes += Convert.ToString( ligne);
-                listedlignes += ", ";
-            
-            }
-             return $"ID: {this.Id} , Libelle station {this.LibelleStation} , ligne(s) {listedlignes}";
-             
+            Longitude = longitude;
+            Latitude = latitude;
         }
 
         public int LigneCommune(Station stationB)
         {
-            foreach (int ligneA in this.ListeDesLignes)
+            foreach (int ligne in ListeLibelleLigne)
             {
-                foreach (int ligneB in stationB.ListeDesLignes)
+                foreach (int ligneB in stationB.ListeLibelleLigne)
                 {
-                    if (ligneA == ligneB) { return ligneA; }
+                    if (ligne == ligneB)
+                    {
+                        return ligne;
+                    }
                 }
             }
             return -1;
         }
-
     }
 }
