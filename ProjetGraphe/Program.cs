@@ -31,11 +31,13 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             }
             PlanMétro.DictionnaireDeNoeuds.TryGetValue(1, out var node);
             GraphViewModel<Station> Graphe = new GraphViewModel<Station>(ListeDeStation, PlanMétro.MatriceAdjacence, PlanMétro,CheminStation);
-            
-            
 
 
-            //new Affichage();
+
+
+            new Affichage();
+            //Application.Run(new FormConnexion());
+
         }
     }
 }
