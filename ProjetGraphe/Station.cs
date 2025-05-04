@@ -10,7 +10,7 @@ namespace TEST_Projet_Livin_Paris
     {
         public int Id;
         public string LibelleStation;
-        public List<float> ListeLibelleLigne; /// oui float car on rajoute +0,5 pour distinguer les lignes bis des lignes clasiques
+        public List<float> ListeLibelleLigne; /// float car on rajoute +0,5 pour distinguer les lignes bis des lignes clasiques ex ligne 7 a un id : 7 et l'id de 7 bis est 7,5
         public double Longitude;
         public double Latitude;
 

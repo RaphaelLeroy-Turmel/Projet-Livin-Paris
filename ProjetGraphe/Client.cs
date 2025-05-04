@@ -2,9 +2,13 @@
 using MySql.Data.MySqlClient;
     public class Clients
     {
-        private string connectionString = "SERVER=localhost;UID=root;DATABASE=livinparis;PORT=3306;PASSWORD=root";
+        public string connectionString;
+        public Clients(string mdp)
+        {
+            this.connectionString = $"server=localhost;user=root;database=livinparis;port=3306;password=" + mdp;
+        }
 
-        public void AjouterClient()
+    public void AjouterClient()
         {
             Console.WriteLine("\n--- Ajout d'un nouveau client ---");
             Console.Write("Nom : "); string nom = Console.ReadLine();

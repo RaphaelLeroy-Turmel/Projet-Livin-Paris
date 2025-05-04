@@ -6,9 +6,10 @@ public class Affichage
     public Affichage()
     {
         Console.WriteLine("== Menu principal Liv'in Paris ==");
-
-        Clients utilisateurService = new Clients();
-        Cuisinier cuisinierService = new Cuisinier();
+        Console.WriteLine("Renseigner le mot de passe MySQL :");
+        string mdp = Console.ReadLine();
+        Clients utilisateurService = new Clients(mdp);
+        Cuisinier cuisinierService = new Cuisinier(mdp);
 
         bool continuer = true;
 

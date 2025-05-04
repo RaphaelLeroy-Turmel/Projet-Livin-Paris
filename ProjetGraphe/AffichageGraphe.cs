@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProjetGraphe;
 using QuickGraph;
 using SkiaSharp;
 namespace TEST_Projet_Livin_Paris
@@ -16,14 +15,20 @@ namespace TEST_Projet_Livin_Paris
         private List<(string, string)> cheminSurligne = new();                       /// Liste des arêtes (nom des stations) formant le chemin à surligner.
         private string resumeChemin = "";                                           /// Texte affichant le résumé du chemin (stations + durée).
         public Graphe<T> graphe;
+        List<string> CheminStation;
 
 
 
-
-        public GraphViewModel(List<Station> stations, int[,] adjacencyMatrix, Graphe<T> graphe)     /// Constructeur : initialise le graphe avec les stations et la matrice d'adjacence.
+        public GraphViewModel(List<Station> stations, int[,] adjacencyMatrix, Graphe<T> graphe,List<int> CheminStation)     /// Constructeur : initialise le graphe avec les stations et la matrice d'adjacence.
         {
             this.SchémaDeGraphe = new BidirectionalGraph<string, Edge<string>>();
             this.graphe = graphe;
+            this.CheminStation = new List<string>();
+            foreach (Station station in stations)
+            {
+                this.CheminStation.Add(station.LibelleStation);
+            }
+
 
             for (int i = 0; i < stations.Count; i++)
             {
@@ -55,12 +60,13 @@ namespace TEST_Projet_Livin_Paris
             }
             string imagePath = "graph_output.png";
             DrawGraph(imagePath);
-
+            SetCheminSurligne(CheminStation , stations , graphe.MatriceAdjacence);
+            
             Console.WriteLine($"Image du graphe sauvegardée dans {imagePath}");
             Process.Start(new ProcessStartInfo(imagePath) { UseShellExecute = true });
         }
-
-        public void SetCheminSurligne(List<int> chemin, List<Station> stations, int[,] matriceAdjacence, List<int> idList)      /// Définit un chemin à surligner et calcule le temps total du trajet.
+        //aaaaaaaaa
+        public void SetCheminSurligne(List<int> chemin, List<Station> stations, int[,] matriceAdjacence)      /// Définit un chemin à surligner et calcule le temps total du trajet.
         {
             cheminSurligne.Clear();
             int totalTemps = 0;
@@ -70,19 +76,33 @@ namespace TEST_Projet_Livin_Paris
                 int idA = chemin[i];
                 int idB = chemin[i + 1];
 
-                int indexA = idList.IndexOf(idA);
-                int indexB = idList.IndexOf(idB);
+                //int indexA = idList.IndexOf(idA);
+                //int indexB = idList.IndexOf(idB);
 
-                if (indexA == -1 || indexB == -1)
-                    continue;
+                //if (indexA == -1 || indexB == -1)
+                //    continue;
 
                 Station stationA = stations.FirstOrDefault(s => s.Id == idA);
                 Station stationB = stations.FirstOrDefault(s => s.Id == idB);
+                foreach(Noeud<T> node in graphe.DictionnaireDeNoeuds.Values )
+                {
+                    if (stationA.LibelleStation == node.GetLibStation() && idA != node.Id)
+                    {
+                        Console.WriteLine("Les noeuds ne concordents pas avec station Adans SetCheminSurLigne");
+                    }
+                    if (stationB.LibelleStation == node.GetLibStation() && idB != node.Id)
+                    {
+                        Console.WriteLine("Les noeuds ne concordents pas avec station B dans SetCheminSurLigne");
+                    }
 
+
+                }
+                
                 if (stationA != null && stationB != null)
                 {
                     cheminSurligne.Add((stationA.LibelleStation, stationB.LibelleStation));
-                    totalTemps += matriceAdjacence[indexA, indexB];
+
+                    totalTemps += matriceAdjacence[idA, idB];
                 }
             }
 
@@ -92,7 +112,11 @@ namespace TEST_Projet_Livin_Paris
                 int idEnd = chemin.Last();
                 var stationStart = stations.FirstOrDefault(s => s.Id == idStart)?.LibelleStation ?? "?";
                 var stationEnd = stations.FirstOrDefault(s => s.Id == idEnd)?.LibelleStation ?? "?";
-                resumeChemin = $"{stationStart} → {stationEnd} : {totalTemps} min";
+                resumeChemin = $"{stationStart} -> {stationEnd} : {totalTemps} min";
+            }
+            foreach(var statchemin in cheminSurligne)
+            {
+                //Console.WriteLine($"item 1 : {statchemin.Item1} --> item2 :{statchemin.Item2}");
             }
         }
 
@@ -145,7 +169,17 @@ namespace TEST_Projet_Livin_Paris
                 {
                     if (positions.ContainsKey(edge.Source) && positions.ContainsKey(edge.Target))
                     {
-                        bool isPath = cheminSurligne.Contains((edge.Source, edge.Target)) || cheminSurligne.Contains((edge.Target, edge.Source));
+                        bool isPath = false;
+                        foreach(var tuples in cheminSurligne)
+                        {
+                            if((tuples.Item1 == edge.Source && tuples.Item2 == edge.Target)|| (tuples.Item2 == edge.Source && tuples.Item1 == edge.Target))
+                            {
+                                isPath = true;
+                            }
+                        }
+                        //Console.WriteLine("edge.Source : " + edge.Source + "       edge.Target : " + edge.Target);
+                        if (isPath) { Console.WriteLine("ISPATH"); }
+                        if (!isPath) { Console.WriteLine("ISNotPATH"); }
                         var paint = new SKPaint
                         {
                             Color = isPath ? SKColors.Red : SKColors.DarkGray,

@@ -3,8 +3,13 @@ using System;
 
 public class Cuisinier
 {
-    private readonly string connectionString = "server=localhost;user=root;database=livinparis;port=3306;password=root";
 
+    public string connectionString;
+
+    public Cuisinier(string mdp)
+    {
+        this.connectionString = $"server=localhost;user=root;database=livinparis;port=3306;password=" + mdp;
+    }
     public void AjouterCuisinierDepuisConsole()
     {
         Console.WriteLine("=== Ajout d'un nouveau cuisinier ===");
@@ -126,7 +131,6 @@ public class Cuisinier
 
         Console.WriteLine("-------------------------------------------");
     }
-
     public void AfficherPlatDuJour(int idCuisinier)
     {
         using var conn = new MySqlConnection(connectionString);
