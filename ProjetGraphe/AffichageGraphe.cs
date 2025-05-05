@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using QuickGraph;
 using SkiaSharp;
 namespace TEST_Projet_Livin_Paris
-{
+{///Raphaël_LEROY TURMEL Thomas LIOTIER Loan LU-CHI-VANG TD K
     internal class GraphViewModel<T>
     {
         public BidirectionalGraph<string, Edge<string>> SchémaDeGraphe { get; private set; }   /// Graphe orienté représentant les stations et connexions.

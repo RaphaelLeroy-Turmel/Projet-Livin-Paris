@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TEST_Projet_Livin_Paris
-{
+{///Raphaël_LEROY TURMEL Thomas LIOTIER Loan LU-CHI-VANG TD K
     internal class Lien<T>
     {
 

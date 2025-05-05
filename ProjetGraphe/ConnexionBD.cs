@@ -4,7 +4,7 @@ using ProjetGraphe;
 using LivInParis;
 
 namespace LivInParis.Data
-{
+{///Raphaël_LEROY TURMEL Thomas LIOTIER Loan LU-CHI-VANG TD K
     public static class ConnexionDB
     {
 
