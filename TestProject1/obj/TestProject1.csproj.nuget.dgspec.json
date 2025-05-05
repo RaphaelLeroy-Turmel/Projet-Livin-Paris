@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\TestProject1\\TestProject1.csproj": {}
+    "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\TestProject1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\ProjetGraphe\\ProjetGraphe.csproj": {
+    "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\ProjetGraphe.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\ProjetGraphe\\ProjetGraphe.csproj",
+        "projectUniqueName": "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\ProjetGraphe.csproj",
         "projectName": "ProjetGraphe",
-        "projectPath": "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\ProjetGraphe\\ProjetGraphe.csproj",
+        "projectPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\ProjetGraphe.csproj",
         "packagesPath": "C:\\Users\\kisho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\ProjetGraphe\\obj\\",
+        "outputPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kisho\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -82,18 +82,18 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\TestProject1\\TestProject1.csproj": {
+    "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\TestProject1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\TestProject1\\TestProject1.csproj",
+        "projectUniqueName": "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\TestProject1.csproj",
         "projectName": "TestProject1",
-        "projectPath": "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\TestProject1\\TestProject1.csproj",
+        "projectPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\TestProject1.csproj",
         "packagesPath": "C:\\Users\\kisho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\TestProject1\\obj\\",
+        "outputPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kisho\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -111,8 +111,8 @@
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\ProjetGraphe\\ProjetGraphe.csproj": {
-                "projectPath": "C:\\Users\\kisho\\Desktop\\LINVINGPARIS\\ProjetGraphe\\ProjetGraphe.csproj"
+              "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\ProjetGraphe.csproj": {
+                "projectPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\ProjetGraphe.csproj"
               }
             }
           }
@@ -157,7 +157,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

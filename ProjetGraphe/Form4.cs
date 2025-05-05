@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TEST_Projet_Livin_Paris;
 
 namespace ProjetGraphe
 {
@@ -167,6 +168,33 @@ namespace ProjetGraphe
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMetro_Click(object sender, EventArgs e)
+        {
+            string file1 = "MetroParisUTF8 feuille 1.txt";
+            string file2 = "Métro paris UTF8 feuille2 v2.txt";
+            Graphe<Station> PlanMétro = new Graphe<Station>(file1, file2);
+            List<Station> ListeDeStation = new List<Station>();
+            foreach (Noeud<Station> Noeud in PlanMétro.DictionnaireDeNoeuds.Values)
+            {
+                ListeDeStation.Add(Noeud.element);
+            }
+            string LibelleStart = "Porte Maillot";
+            string LibelleEnd = "Saint-Fargeau";
+            List<int> CheminStation = new List<int>();
+            foreach (Station station in PlanMétro.PCC(LibelleStart, LibelleEnd))
+            {
+                CheminStation.Add(station.Id);
+            }
+            PlanMétro.DictionnaireDeNoeuds.TryGetValue(1, out var node);
+
+            GraphViewModel<Station> Graphe = new GraphViewModel<Station>(ListeDeStation, PlanMétro.MatriceAdjacence, PlanMétro, CheminStation);
+        }
+
+        private void picLogo_Click(object sender, EventArgs e)
         {
 
         }
