@@ -10,7 +10,7 @@ namespace LivInParis.Data
 
         private static string server = "localhost";
         private static string user = "root";
-        private static string password = "root";
+        private static string password = "Raphalou2005m?";
         private static string database = "livinparis";
 
         private static string connectionString =
