@@ -18,7 +18,7 @@ namespace TEST_Projet_Livin_Paris
         {
             Id = id;
             LibelleStation = libelleStation;
-            ListeLibelleLigne = libelleLigne;
+            ListeLibelleLigne = new List<float>(libelleLigne);
             Longitude = longitude;
             Latitude = latitude;
         }
@@ -34,6 +34,12 @@ namespace TEST_Projet_Livin_Paris
             }
             Longitude = longitude;
             Latitude = latitude;
+        }
+        public void AddLigne(float IdLigne)
+        {
+            if (!ListeLibelleLigne.Contains(IdLigne)) { this.ListeLibelleLigne.Add(IdLigne); }
+            else { Console.WriteLine("Ajout impossible la ligne est deja présente dans la liste !"); }
+
         }
 
         public int LigneCommune(Station stationB)
