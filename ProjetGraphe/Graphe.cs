@@ -20,7 +20,7 @@ namespace TEST_Projet_Livin_Paris
         public Graphe(string filename1, string filename2)
         {
             DictionnaireDeNoeuds = new Dictionary<int, Noeud<T>>();
-            using (var sr = new StreamReader(filename1, Encoding.UTF8))  // Utilisation du StreamReader avec encodage UTF-8
+            using (var sr = new StreamReader(filename1, Encoding.UTF8))  /// Utilisation du StreamReader avec encodage UTF-8
             {
                 sr.ReadLine();
                 string line = sr.ReadLine();
@@ -129,7 +129,7 @@ namespace TEST_Projet_Livin_Paris
                         }
                         else
                         {
-                            // Erreur : valeur non convertible
+                            /// Erreur : valeur non convertible
                             Console.WriteLine("Impossible de convertir la valeur : " + colonnes[0]);
                         }
 
@@ -185,10 +185,10 @@ namespace TEST_Projet_Livin_Paris
                         }
                         else
                         {
-                            //Console.WriteLine($"Une des stations (IdStation : {IdStation}, IdStationPrécédente : {IdStationPrécédente}, IdStationSuivante : {IdStationSuivante}) n'existe pas dans le dictionnaire.");
+                            ///Console.WriteLine($"Une des stations (IdStation : {IdStation}, IdStationPrécédente : {IdStationPrécédente}, IdStationSuivante : {IdStationSuivante}) n'existe pas dans le dictionnaire.");
                         }
 
-                        line = sr.ReadLine(); // Lire la ligne suivante
+                        line = sr.ReadLine(); /// Lire la ligne suivante
                     }
                 }
             }
@@ -259,27 +259,27 @@ namespace TEST_Projet_Livin_Paris
         }
         public void SupprimeDoublon(Dictionary<int, Noeud<T>> DictionnaireDeNoeud)
         {
-            // Groupement des stations par nom
+            /// Groupement des stations par nom
             var groupes = DictionnaireDeNoeud.Values
                 .GroupBy(n => n.GetLibStation())
                 .Where(g => g.Count() > 1);
 
             foreach (var groupe in groupes)
             {
-                // Choix d'un nœud principal à garder
+                /// Choix d'un nœud principal à garder
                 var noeudPrincipal = groupe.First();
                 var noeudsADefusionner = groupe.Skip(1).ToList();
 
                 foreach (var doublon in noeudsADefusionner)
                 {
-                    // Fusion des lignes (si Station)
+                    /// Fusion des lignes (si Station)
                     if (doublon is Station stationDoublon)
                     {
                         foreach (var ligne in stationDoublon.ListeLibelleLigne)
                             noeudPrincipal.AddLigne(ligne);
                     }
 
-                    // Rediriger les arcs sortants du doublon vers le noeud principal
+                    /// Rediriger les arcs sortants du doublon vers le noeud principal
                     foreach (var arcSortant in doublon.ArcsSortants)
                     {
                         var nouveauLien = new Lien<T>(noeudPrincipal, arcSortant.NoeudArrivée, arcSortant.Poids);
@@ -287,7 +287,7 @@ namespace TEST_Projet_Livin_Paris
                             noeudPrincipal.ArcsSortants.Add(nouveauLien);
                     }
 
-                    // Rediriger les arcs entrants du doublon vers le noeud principal
+                    /// Rediriger les arcs entrants du doublon vers le noeud principal
                     foreach (var arcEntrant in doublon.ArcsEntrants)
                     {
                         var nouveauLien = new Lien<T>(arcEntrant.NoeudDépart, noeudPrincipal, arcEntrant.Poids);
@@ -295,10 +295,10 @@ namespace TEST_Projet_Livin_Paris
                             noeudPrincipal.ArcsEntrants.Add(nouveauLien);
                     }
 
-                    // Mise à jour des arcs dans les autres noeuds
+                    /// Mise à jour des arcs dans les autres noeuds
                     foreach (var n in DictionnaireDeNoeud.Values)
                     {
-                        // Corriger les arcs sortants
+                        /// Corriger les arcs sortants
                         for (int i = 0; i < n.ArcsSortants.Count; i++)
                         {
                             if (n.ArcsSortants[i].NoeudArrivée.Id == doublon.Id)
@@ -307,7 +307,7 @@ namespace TEST_Projet_Livin_Paris
                             }
                         }
 
-                        // Corriger les arcs entrants
+                        /// Corriger les arcs entrants
                         for (int i = 0; i < n.ArcsEntrants.Count; i++)
                         {
                             if (n.ArcsEntrants[i].NoeudDépart.Id == doublon.Id)
@@ -317,13 +317,13 @@ namespace TEST_Projet_Livin_Paris
                         }
                     }
 
-                    // Suppression du doublon du dictionnaire
-                    //Console.WriteLine($"Suppression de la station en double : {doublon.GetLibStation()} (id {doublon.Id})");
+                    /// Suppression du doublon du dictionnaire
+                    ///Console.WriteLine($"Suppression de la station en double : {doublon.GetLibStation()} (id {doublon.Id})");
                     DictionnaireDeNoeud.Remove(doublon.Id);
                 }
             }
         }
-        // Méthode d'aide pour éviter d'ajouter deux fois le même arc (même départ, arrivée, poids)
+        /// Méthode d'aide pour éviter d'ajouter deux fois le même arc (même départ, arrivée, poids)
         private bool ExisteDeja(List<Lien<T>> liste, Lien<T> nouveau)
         {
             return liste.Any(l =>
@@ -348,7 +348,7 @@ namespace TEST_Projet_Livin_Paris
                         {
                             Matrice[lienE.NoeudArrivée.Id, lienE.NoeudDépart.Id] = lienE.Poids;
                             Matrice[lienE.NoeudDépart.Id, lienE.NoeudArrivée.Id] = lienE.Poids;
-                            //Console.WriteLine(lienE.toString());
+                            ///Console.WriteLine(lienE.toString());
                             if (lienE.NoeudDépart.element is Station nodeElementD && lienE.NoeudArrivée.element is Station nodeElementA)
                             {
                                 if (nodeElementD.Id != lienE.NoeudDépart.Id || lienE.NoeudArrivée.Id != nodeElementA.Id)
@@ -368,8 +368,8 @@ namespace TEST_Projet_Livin_Paris
                         {
                             Matrice[lienS.NoeudArrivée.Id, lienS.NoeudDépart.Id] = lienS.Poids;
                             Matrice[lienS.NoeudDépart.Id, lienS.NoeudArrivée.Id] = lienS.Poids;
-                            //Console.WriteLine($" NoeudDépart.Id : {lienS.NoeudDépart.Id} --> NoeudArrivée.Id : {lienS.NoeudArrivée.Id} : {lienS.Poids}");
-                            //Console.WriteLine(lienS.toString());
+                            ///Console.WriteLine($" NoeudDépart.Id : {lienS.NoeudDépart.Id} --> NoeudArrivée.Id : {lienS.NoeudArrivée.Id} : {lienS.Poids}");
+                            ///Console.WriteLine(lienS.toString());
                             if (lienS.NoeudDépart.element is Station nodeElementD && lienS.NoeudArrivée.element is Station nodeElementA)
                             {
                                 if (nodeElementD.Id != lienS.NoeudDépart.Id || lienS.NoeudArrivée.Id != nodeElementA.Id)
@@ -381,7 +381,7 @@ namespace TEST_Projet_Livin_Paris
                     }
                     if (noeud.ArcsSortants == null)
                     {
-                        //Console.WriteLine(" Problème génération matrice ArcsSortant est nulle");
+                        ///Console.WriteLine(" Problème génération matrice ArcsSortant est nulle");
                     }
 
                 }
@@ -393,11 +393,11 @@ namespace TEST_Projet_Livin_Paris
         }
         public void AfficherMatrice()
         {
-            // Obtenir les dimensions de la matrice
+            /// Obtenir les dimensions de la matrice
             int lignes = MatriceAdjacence.GetLength(0);
             int colonnes = MatriceAdjacence.GetLength(1);
 
-            // Afficher un en-tête pour les colonnes
+            /// Afficher un en-tête pour les colonnes
             Console.Write("    ");
             for (int j = 0; j < colonnes; j++)
             {
@@ -405,7 +405,7 @@ namespace TEST_Projet_Livin_Paris
             }
             Console.WriteLine();
 
-            // Afficher une ligne de séparation
+            /// Afficher une ligne de séparation
             Console.Write("    ");
             for (int j = 0; j < colonnes; j++)
             {
@@ -413,7 +413,7 @@ namespace TEST_Projet_Livin_Paris
             }
             Console.WriteLine();
 
-            // Afficher chaque ligne avec son indice
+            /// Afficher chaque ligne avec son indice
             for (int i = 0; i < lignes; i++)
             {
                 Console.Write($"{i,2} | ");
@@ -467,7 +467,7 @@ namespace TEST_Projet_Livin_Paris
 
         public List<Station> PCC(string LibelleStart, string LibelleEnd)
         {
-            // Trouver les IDs des stations à partir des libellés
+            /// Trouver les IDs des stations à partir des libellés
             Dictionary<int, Noeud<T>> DictionnaireDeNoeud = new Dictionary<int, Noeud<T>>(DictionnaireDeNoeuds);
             SupprimeDoublon(DictionnaireDeNoeud);
             int startId = -1, endId = -1;
@@ -488,7 +488,7 @@ namespace TEST_Projet_Livin_Paris
 
             /// Exécution de Dijkstra
             var (pred, distances) = Dijkstra(startId, DictionnaireDeNoeud);
-            // Reconstruction du chemin
+            /// Reconstruction du chemin
             List<string> chemin = new List<string>();
             int current = endId;
             string RéponseChemin = "";
@@ -496,7 +496,7 @@ namespace TEST_Projet_Livin_Paris
             {
                 if (DictionnaireDeNoeud.TryGetValue(current, out var node) && DictionnaireDeNoeud[current].element is Station CurrentStation)
                 {
-                    chemin.Insert(0, node.GetLibStation()); // On insère en début de liste
+                    chemin.Insert(0, node.GetLibStation()); /// On insère en début de liste
                     ListeStationChemin.Add(CurrentStation);
                     current = pred[current];
 
@@ -506,11 +506,11 @@ namespace TEST_Projet_Livin_Paris
             RéponseChemin += ListeStationChemin[0].LibelleStation + $"( {ListeStationChemin[0].ListeLibelleLigne[0]} ) --> ";
             for (int i = 1; i < ListeStationChemin.Count - 1; i++)
             {
-                //Console.WriteLine($"précédent : {ListeStationChemin[i - 1].LibelleStation} et suivant : {ListeStationChemin[i + 1].LibelleStation} ont en commun la ligne : {LigneCommune(ListeStationChemin[i - 1], ListeStationChemin[i + 1])}");
+                ///Console.WriteLine($"précédent : {ListeStationChemin[i - 1].LibelleStation} et suivant : {ListeStationChemin[i + 1].LibelleStation} ont en commun la ligne : {LigneCommune(ListeStationChemin[i - 1], ListeStationChemin[i + 1])}");
 
-                //Console.WriteLine($"actuel: {ListeStationChemin[i].LibelleStation} et suivant : {ListeStationChemin[i + 1].LibelleStation   } ont en commun la ligne : {LigneCommune(ListeStationChemin[i], ListeStationChemin[i + 1])}");
+                ///Console.WriteLine($"actuel: {ListeStationChemin[i].LibelleStation} et suivant : {ListeStationChemin[i + 1].LibelleStation   } ont en commun la ligne : {LigneCommune(ListeStationChemin[i], ListeStationChemin[i + 1])}");
 
-                //Console.WriteLine(DictionnaireDeNoeuds[i+1].GetLibStation() +" ==?=="+ ListeStationChemin[i].LibelleStation);
+                ///Console.WriteLine(DictionnaireDeNoeuds[i+1].GetLibStation() +" ==?=="+ ListeStationChemin[i].LibelleStation);
 
                 Noeud<T> Noeudi = DictionnaireDeNoeuds[i + 1];
                 List<float> ListDeLignei = new List<float>();
@@ -520,7 +520,7 @@ namespace TEST_Projet_Livin_Paris
                     if (node.GetLibStation() == ListeStationChemin[i].LibelleStation)
                     {
                         ListDeLignei.Add(ListeStationChemin[i].ListeLibelleLigne[0]);
-                        //Console.WriteLine("ajout a la listei de : " + ListeStationChemin[i].ListeLibelleLigne[0]);
+                        ///Console.WriteLine("ajout a la listei de : " + ListeStationChemin[i].ListeLibelleLigne[0]);
                     }
                 }
                 bool p = false;
@@ -539,15 +539,15 @@ namespace TEST_Projet_Livin_Paris
             }
             RéponseChemin += ListeStationChemin[ListeStationChemin.Count - 1].LibelleStation + " Vous êtes arrivé !";
 
-            // Vérification : le chemin commence-t-il bien par la station de départ ?
+            /// Vérification : le chemin commence-t-il bien par la station de départ ?
             if (chemin.Count == 0 || chemin[0] != LibelleStart)
             {
                 Console.WriteLine("Aucun chemin trouvé entre les deux stations.");
                 return null;
             }
-            // Construction de la chaîne à afficher
+            /// Construction de la chaîne à afficher
             string result = string.Join(" --> ", chemin);
-            //Console.WriteLine(result);
+            ///Console.WriteLine(result);
             Console.WriteLine("Voici le chemin à suivre : " + RéponseChemin);
             return ListeStationChemin;
         }
@@ -570,7 +570,7 @@ namespace TEST_Projet_Livin_Paris
 
             for (int count = 0; count < size - 1; count++)
             {
-                // Trouver le noeud u non visité avec la plus petite distance
+                /// Trouver le noeud u non visité avec la plus petite distance
                 int u = -1;
                 int minDist = int.MaxValue;
                 for (int i = 0; i < size; i++)
@@ -582,31 +582,31 @@ namespace TEST_Projet_Livin_Paris
                     }
                 }
 
-                if (u == -1) break; // Tous les nœuds accessibles ont été traités
+                if (u == -1) break; /// Tous les nœuds accessibles ont été traités
 
                 visited[u] = true;
 
-                // Mise à jour des voisins de u
+                /// Mise à jour des voisins de u
                 if (DictionnaireDeNoeud.TryGetValue(u, out var NodeU))
                 {
                     //Console.WriteLine($"Exploration du nœud : {NodeU.GetLibStation()}");
                     foreach (Lien<T> lien in NodeU.ArcsSortants)
                     {
-                        //Console.WriteLine($"  → vers {lien.NoeudArrivée.GetLibStation()}, poids = {lien.Poids}");                      
+                        ///Console.WriteLine($"  → vers {lien.NoeudArrivée.GetLibStation()}, poids = {lien.Poids}");                      
 
 
                         int v = lien.NoeudArrivée.Id;
                         if (!visited[v])
                         {
-                            //int alt = distances[u] + lien.Poids;
+                            ///int alt = distances[u] + lien.Poids;
                             int penalty = 0;
 
-                            // Vérification du changement de ligne
+                            /// Vérification du changement de ligne
                             if (NodeU.element is Station stationU && lien.NoeudArrivée.element is Station stationV)
                             {
                                 if (stationU.LigneCommune(stationV) == -1)
                                 {
-                                    penalty = 10; // Pénalité de changement de ligne
+                                    penalty = 10; /// Pénalité de changement de ligne
                                 }
                             }
 
@@ -651,15 +651,11 @@ namespace TEST_Projet_Livin_Paris
 
         static int LigneCommune(Station stationA, Station stationB)
         {
-            //Console.WriteLine("Station ligne commune : A:"+ stationA.LibelleStation+" et B : "+ stationB.LibelleStation);
-            //foreach (int ligneB in stationB.ListeLibelleLigne)
-            //{
-            //    Console.Write("   B : " + ligneB);
-            //}
+            
 
             foreach (int ligneA in stationA.ListeLibelleLigne)
             {
-                //Console.Write("   A : "+ligneA);
+                ///Console.Write("   A : "+ligneA);
                 foreach (int ligneB in stationB.ListeLibelleLigne)
                 {
                     if (ligneA == ligneB) { return ligneA; }
@@ -670,7 +666,7 @@ namespace TEST_Projet_Livin_Paris
             return -1;
         }
 
-        // Méthode pour vérifier si une station existe déjà dans le graphe
+        /// Méthode pour vérifier si une station existe déjà dans le graphe
         private Noeud<T> ContientStation(List<Noeud<T>> liste, string libelle)
         {
             foreach (var noeud in liste)
@@ -685,9 +681,9 @@ namespace TEST_Projet_Livin_Paris
 
         public double CalculDistance(double longitude1, double latitude1, double longitude2, double latitude2)
         {
-            const double R = 6371.0; // Rayon de la Terre en kilomètres
+            const double R = 6371.0; /// Rayon de la Terre en kilomètres
 
-            // Conversion des degrés en radians
+            /// Conversion des degrés en radians
             double lat1Rad = latitude1 * Math.PI / 180.0;
             double lon1Rad = longitude1 * Math.PI / 180.0;
             double lat2Rad = latitude2 * Math.PI / 180.0;
@@ -702,7 +698,7 @@ namespace TEST_Projet_Livin_Paris
 
             double distance = R * c;
 
-            return distance; // en kilomètres
+            return distance; /// en kilomètres
         }
 
         public int CalculTempsEntre2Stations(Noeud<T> A, Noeud<T> B)

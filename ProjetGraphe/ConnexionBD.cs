@@ -10,7 +10,7 @@ namespace LivInParis.Data
 
         private static string server = "localhost";
         private static string user = "root";
-        private static string password = "root";
+        private static string password = "Raphalou2005m?";
         private static string database = "livinparis";
 
         private static string connectionString =
@@ -19,7 +19,7 @@ namespace LivInParis.Data
         public static MySqlConnection GetConnection()
         {
             var conn = new MySqlConnection(connectionString);
-            conn.Open(); // Ouvre immédiatement la connexion
+            conn.Open(); /// Ouvre immédiatement la connexion
             return conn;
         }
     }
