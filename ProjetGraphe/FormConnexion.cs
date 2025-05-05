@@ -46,6 +46,8 @@ namespace ProjetGraphe
         private CheckBox chkClient;
         private CheckBox chkCuisinier;
         private Label lblSuccesCreation;
+        private Button btnjson;
+        private Button btnxml;
         private Label lblErreur;
 
         private void InitializeComponent()
@@ -76,6 +78,8 @@ namespace ProjetGraphe
             chkClient = new CheckBox();
             chkCuisinier = new CheckBox();
             lblSuccesCreation = new Label();
+            btnjson = new Button();
+            btnxml = new Button();
             ((ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -327,10 +331,32 @@ namespace ProjetGraphe
             lblSuccesCreation.Visible = false;
             lblSuccesCreation.Click += label15_Click;
             // 
+            // btnjson
+            // 
+            btnjson.Location = new Point(900, 588);
+            btnjson.Name = "btnjson";
+            btnjson.Size = new Size(75, 23);
+            btnjson.TabIndex = 31;
+            btnjson.Text = "JSON";
+            btnjson.UseVisualStyleBackColor = true;
+            btnjson.Click += button2_Click;
+            // 
+            // btnxml
+            // 
+            btnxml.Location = new Point(998, 588);
+            btnxml.Name = "btnxml";
+            btnxml.Size = new Size(75, 23);
+            btnxml.TabIndex = 32;
+            btnxml.Text = "XML";
+            btnxml.UseVisualStyleBackColor = true;
+            btnxml.Click += button3_Click;
+            // 
             // FormConnexion
             // 
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1101, 623);
+            Controls.Add(btnxml);
+            Controls.Add(btnjson);
             Controls.Add(lblSuccesCreation);
             Controls.Add(chkCuisinier);
             Controls.Add(chkClient);
@@ -480,6 +506,16 @@ namespace ProjetGraphe
                 lblErreurCreation.Visible = true;
                 lblSuccesCreation.Visible = false;
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            LivInParis.Export.Exporteur.ExporterDepuisInterfaceXml();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            LivInParis.Export.Exporteur.ExporterDepuisInterfaceJson();
         }
     }
 }

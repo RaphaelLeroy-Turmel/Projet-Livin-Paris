@@ -44,6 +44,7 @@ CREATE TABLE Commandes
     id_client INT NOT NULL,
     date_commande TIMESTAMP,
     total DECIMAL(10,2),
+    metro VARCHAR(55) NOT NULL,
     statut ENUM('En cours', 'Livrée', 'Annulée'),
     FOREIGN KEY (id_client) REFERENCES Utilisateurs(id_utilisateur)
 );

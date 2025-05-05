@@ -32,7 +32,7 @@ namespace ProjetGraphe
 
             using var conn = ConnexionDB.GetConnection();
             string query = @"
-    SELECT c.id_commande, c.date_commande, c.total, c.statut,
+    SELECT c.id_commande,c.metro, c.date_commande, c.total, c.statut, 
            p.nom_plat, lc.quantite, lc.date_livraison
     FROM commandes c
     JOIN lignes_commande lc ON c.id_commande = lc.id_commande
@@ -52,7 +52,7 @@ namespace ProjetGraphe
                 DateTime date = reader.GetDateTime("date_commande");
                 decimal total = reader.GetDecimal("total");
                 string statut = reader.GetString("statut");
-                string metro = reader.IsDBNull(reader.GetOrdinal("metro_proche")) ? "Métro inconnu" : reader.GetString("metro_proche");
+                string metro = reader.IsDBNull(reader.GetOrdinal("metro")) ? "Métro inconnu" : reader.GetString("metro");
                 string nomPlat = reader.GetString("nom_plat");
                 int quantite = reader.GetInt32("quantite");
                 DateTime dateLivraison = reader.GetDateTime("date_livraison");
