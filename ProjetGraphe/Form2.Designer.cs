@@ -53,7 +53,7 @@
             lblBienvenue.Font = new Font("Comic Sans MS", 20F, FontStyle.Bold | FontStyle.Underline);
             lblBienvenue.Location = new Point(304, 9);
             lblBienvenue.Name = "lblBienvenue";
-            lblBienvenue.Size = new Size(319, 38);
+            lblBienvenue.Size = new Size(400, 48);
             lblBienvenue.TabIndex = 0;
             lblBienvenue.Text = "Tableau de Bord Client";
             lblBienvenue.Click += lblBienvenue_Click;
@@ -82,11 +82,11 @@
             // lstCommandes
             // 
             lstCommandes.FormattingEnabled = true;
-            lstCommandes.ItemHeight = 17;
             lstCommandes.Location = new Point(0, 359);
             lstCommandes.Name = "lstCommandes";
-            lstCommandes.Size = new Size(469, 276);
+            lstCommandes.Size = new Size(469, 264);
             lstCommandes.TabIndex = 3;
+            lstCommandes.SelectedIndexChanged += lstCommandes_SelectedIndexChanged;
             // 
             // pictureBox1
             // 
@@ -99,20 +99,18 @@
             // 
             // cmbPlats
             // 
-            this.Load += new System.EventHandler(this.FormEspaceClient_Load);
             cmbPlats.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPlats.FormattingEnabled = true;
             cmbPlats.Location = new Point(8, 79);
             cmbPlats.Name = "cmbPlats";
-            cmbPlats.Size = new Size(133, 25);
+            cmbPlats.Size = new Size(133, 28);
             cmbPlats.TabIndex = 53;
-
             // 
             // numQuantite
             // 
             numQuantite.Location = new Point(157, 79);
             numQuantite.Name = "numQuantite";
-            numQuantite.Size = new Size(105, 24);
+            numQuantite.Size = new Size(105, 28);
             numQuantite.TabIndex = 54;
             numQuantite.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -120,7 +118,7 @@
             // 
             dateLivraisonPicker.Location = new Point(157, 111);
             dateLivraisonPicker.Name = "dateLivraisonPicker";
-            dateLivraisonPicker.Size = new Size(178, 24);
+            dateLivraisonPicker.Size = new Size(178, 28);
             dateLivraisonPicker.TabIndex = 56;
             // 
             // CB
@@ -128,7 +126,7 @@
             CB.AutoSize = true;
             CB.Location = new Point(8, 141);
             CB.Name = "CB";
-            CB.Size = new Size(41, 21);
+            CB.Size = new Size(48, 24);
             CB.TabIndex = 57;
             CB.TabStop = true;
             CB.Text = "CB";
@@ -140,7 +138,7 @@
             Especes.AutoSize = true;
             Especes.Location = new Point(216, 141);
             Especes.Name = "Especes";
-            Especes.Size = new Size(70, 21);
+            Especes.Size = new Size(85, 24);
             Especes.TabIndex = 58;
             Especes.TabStop = true;
             Especes.Text = "Espèces";
@@ -151,7 +149,7 @@
             Paypal.AutoSize = true;
             Paypal.Location = new Point(111, 141);
             Paypal.Name = "Paypal";
-            Paypal.Size = new Size(60, 21);
+            Paypal.Size = new Size(74, 24);
             Paypal.TabIndex = 59;
             Paypal.TabStop = true;
             Paypal.Text = "PayPal";
@@ -181,7 +179,7 @@
             // 
             txtAdresse.Location = new Point(167, 168);
             txtAdresse.Name = "txtAdresse";
-            txtAdresse.Size = new Size(135, 24);
+            txtAdresse.Size = new Size(135, 28);
             txtAdresse.TabIndex = 63;
             txtAdresse.Text = "Adresse";
             // 
@@ -189,14 +187,14 @@
             // 
             txtMetro.Location = new Point(8, 110);
             txtMetro.Name = "txtMetro";
-            txtMetro.Size = new Size(135, 24);
+            txtMetro.Size = new Size(135, 28);
             txtMetro.TabIndex = 64;
             txtMetro.Text = "Metro";
             txtMetro.TextChanged += textBox1_TextChanged;
             // 
             // FormEspaceClient
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(882, 632);
@@ -217,6 +215,7 @@
             Controls.Add(lblBienvenue);
             Font = new Font("Comic Sans MS", 9F);
             Name = "FormEspaceClient";
+            Load += FormEspaceClient_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numQuantite).EndInit();
             ResumeLayout(false);

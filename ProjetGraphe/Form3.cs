@@ -46,17 +46,23 @@ namespace ProjetGraphe
 
         }
 
-        private void btnClient_Click(object sender, EventArgs e)
-        {
-            lstPlats.Items.Clear();
-            using var conn = ConnexionDB.GetConnection();
-            string sql = @"
-        SELECT DISTINCT u.nom, u.prenom
+                private void btnClient_Click(object sender, EventArgs e)
+                {
+                    lstPlats.Items.Clear();
+                    using var conn = ConnexionDB.GetConnection();
+
+                    string sql = @"
+                                SELECT u.nom, u.prenom, c.metro,
+               c.id_commande,
+               GROUP_CONCAT(p.nom_plat SEPARATOR ', ') AS plats,
+               SUM(lc.quantite) AS total_plats
         FROM utilisateurs u
         JOIN commandes c ON u.id_utilisateur = c.id_client
         JOIN lignes_commande lc ON lc.id_commande = c.id_commande
         JOIN plats p ON lc.id_plat = p.id_plat
-        WHERE p.id_cuisinier = @id";
+        WHERE p.id_cuisinier = @id
+        GROUP BY c.id_commande, u.id_utilisateur, u.nom, u.prenom, c.metro
+        ORDER BY c.id_commande DESC;";
 
             using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@id", idCuisinier);
@@ -66,7 +72,12 @@ namespace ProjetGraphe
             {
                 string nom = reader.GetString("nom");
                 string prenom = reader.GetString("prenom");
-                lstPlats.Items.Add($"Client : {prenom} {nom}");
+                string metro = reader.IsDBNull(reader.GetOrdinal("metro")) ? "N/A" : reader.GetString("metro");
+                int idCommande = reader.GetInt32("id_commande");
+                int totalPlats = reader.GetInt32("total_plats");
+                string plats = reader.IsDBNull(reader.GetOrdinal("plats")) ? "Aucun" : reader.GetString("plats");
+
+                lstPlats.Items.Add($"Commande #{idCommande} - {prenom} {nom} - {totalPlats} plat(s) : {plats} - Métro : {metro}");
             }
         }
 
@@ -91,8 +102,8 @@ namespace ProjetGraphe
             string type = this.txtTypePlat.Text.Trim();
             string ingredients = txtIngredients.Text.Trim();
             string nationalite = txtNationalite.Text.Trim();
-            string fabricationText = txtFabrication.Text.Trim();
-            string peremptionText = txtPeremption.Text.Trim();
+            string fabricationText = DateFab.Value.ToString("yyyy-MM-dd");
+            string peremptionText = DatePer.Value.ToString("yyyy-MM-dd");
             string nbPersonnesText = txtNbPersonnes.Text.Trim();
             bool vegetarien = chkVegetarien.Checked;
             bool vegan = chkVegan.Checked;
@@ -175,7 +186,7 @@ namespace ProjetGraphe
             while (reader.Read())
             {
                 string nom = reader.GetString("nom_plat");
-                string regime = reader.GetString("regime_alimentaire"); 
+                string regime = reader.GetString("regime_alimentaire");
                 DateTime date = reader.GetDateTime("date_fabrication");
                 lstPlats.Items.Add($"{nom} (fabriqué le {date:dd/MM/yyyy}{regime})");
             }
@@ -194,6 +205,53 @@ namespace ProjetGraphe
         private void button2_Click(object sender, EventArgs e)
         {
             ListerPlats();
+        }
+
+        private void DateFab_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnrecherche_Click(object sender, EventArgs e)
+        {
+            string file1 = "MetroParisUTF8 feuille 1.txt";
+            string file2 = "Métro paris UTF8 feuille2 v2.txt";
+            string file3 = "PetiteFeuille1.txt";
+            string file4 = "PetiteFeuille2.txt";
+            string depart = txtDepart.Text.Trim();
+            string arrivee = txtArrivee.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(depart) || string.IsNullOrWhiteSpace(arrivee))
+            {
+                MessageBox.Show("Veuillez entrer les deux stations.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // ⚠️ Mets bien les bons chemins vers tes fichiers CSV
+                Graphe<Station> graphe = new Graphe<Station>(file1, file2);
+                List<Station> trajet = graphe.PCC(depart, arrivee);
+
+                if (trajet == null || trajet.Count == 0)
+                {
+                    MessageBox.Show($"Aucun chemin trouvé entre {depart} et {arrivee}.", "Résultat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Itinéraire :");
+                foreach (Station s in trajet)
+                {
+                    sb.AppendLine($"→ {s.LibelleStation} (ligne(s) : {string.Join(", ", s.ListeLibelleLigne)})");
+                }
+
+                MessageBox.Show(sb.ToString(), "Trajet trouvé");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors du calcul du trajet : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

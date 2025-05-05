@@ -52,7 +52,7 @@ namespace ProjetGraphe
                 DateTime date = reader.GetDateTime("date_commande");
                 decimal total = reader.GetDecimal("total");
                 string statut = reader.GetString("statut");
-
+                string metro = reader.IsDBNull(reader.GetOrdinal("metro_proche")) ? "Métro inconnu" : reader.GetString("metro_proche");
                 string nomPlat = reader.GetString("nom_plat");
                 int quantite = reader.GetInt32("quantite");
                 DateTime dateLivraison = reader.GetDateTime("date_livraison");
@@ -92,6 +92,7 @@ namespace ProjetGraphe
             public int Quantite;
             public decimal Prix;
             public DateTime DateLivraison;
+            public string Metro;
             public string AdresseLivraison;
             public string MoyenPaiement;
         }
@@ -112,8 +113,12 @@ namespace ProjetGraphe
             try
             {
                 // Étape 1 : Créer la commande
-                string insertCommande = "INSERT INTO Commandes (id_client, date_commande, total, statut) VALUES (@id, NOW(), 0, 'En cours')";
+                string insertCommande = @"INSERT INTO Commandes (id_client, metro, date_commande, total, statut) 
+                          VALUES (@id, @metro, NOW(), 0, 'En cours')";
+                
+
                 using var cmd1 = new MySqlCommand(insertCommande, conn, trans);
+                cmd1.Parameters.AddWithValue("@metro", txtMetro.Text.Trim());
                 cmd1.Parameters.AddWithValue("@id", idClient); // <-- assure-toi d'avoir stocké l'ID du client au login
                 cmd1.ExecuteNonQuery();
                 int idCommande = (int)cmd1.LastInsertedId;
@@ -221,6 +226,7 @@ namespace ProjetGraphe
                 Quantite = quantite,
                 Prix = 9.99m, // à remplacer par une vraie valeur si besoin
                 DateLivraison = dateLivraison,
+                Metro = metro,
                 AdresseLivraison = adresse + " (Métro : " + metro + ")",
                 MoyenPaiement = paiement
             });
@@ -248,7 +254,7 @@ namespace ProjetGraphe
             cmbPlats.DisplayMember = "Value";
             cmbPlats.ValueMember = "Key";
         }
-       
+
 
         private void FormEspaceClient_Load(object sender, EventArgs e)
         {
@@ -263,6 +269,11 @@ namespace ProjetGraphe
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lstCommandes_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

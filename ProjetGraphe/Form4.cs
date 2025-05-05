@@ -184,10 +184,10 @@ namespace ProjetGraphe
             }
             string LibelleStart = "Porte Maillot";
             string LibelleEnd = "Saint-Fargeau";
-            List<int> CheminStation = new List<int>();
+            List<string> CheminStation = new List<string>();
             foreach (Station station in PlanMétro.PCC(LibelleStart, LibelleEnd))
             {
-                CheminStation.Add(station.Id);
+                CheminStation.Add(station.LibelleStation);
             }
             PlanMétro.DictionnaireDeNoeuds.TryGetValue(1, out var node);
 
