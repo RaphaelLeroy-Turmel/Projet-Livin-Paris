@@ -1,4 +1,4 @@
-DROP DATABASE livinparis;
+-- DROP DATABASE livinparis;
 CREATE DATABASE livinparis;
 USE livinparis;
 
@@ -44,6 +44,7 @@ CREATE TABLE Commandes
     id_client INT NOT NULL,
     date_commande TIMESTAMP,
     total DECIMAL(10,2),
+    metro VARCHAR(55) NOT NULL,
     statut ENUM('En cours', 'Livrée', 'Annulée'),
     FOREIGN KEY (id_client) REFERENCES Utilisateurs(id_utilisateur)
 );
@@ -97,4 +98,6 @@ SELECT * FROM Utilisateurs WHERE est_cuisinier = FALSE AND est_client = TRUE; --
 SELECT * FROM Plats;
 SELECT * FROM Livraisons WHERE statut = 'En Cours';
 SELECT *FROM Transactions;
+SELECT * FROM commandes;
+SELECT * FROM lignes_commande;
 
