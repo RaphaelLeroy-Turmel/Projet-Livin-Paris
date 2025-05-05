@@ -90,6 +90,84 @@ namespace ProjetGraphe
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            cmbTriClient.Items.Clear();
+            cmbTriClient.Items.Add("Nom alphabétique");
+            cmbTriClient.Items.Add("Rue");
+            cmbTriClient.Items.Add("Montant des achats cumulés");
+            cmbTriClient.SelectedIndex = 0;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            lstResultats.Items.Clear();
+
+            if (cmbTriClient.SelectedItem == null)
+            {
+                MessageBox.Show("Veuillez sélectionner un critère de tri.");
+                return;
+            }
+
+            string tri = cmbTriClient.SelectedItem.ToString();
+
+            string sql = "";
+
+            if (tri == "Nom alphabétique")
+            {
+                sql = @"SELECT nom, prenom FROM utilisateurs WHERE est_client = true ORDER BY nom, prenom";
+            }
+            else if (tri == "Rue")
+            {
+                sql = @"SELECT nom, prenom, adresse FROM utilisateurs WHERE est_client = true ORDER BY adresse";
+            }
+            else if (tri == "Montant des achats cumulés")
+            {
+                sql = @"
+            SELECT u.nom, u.prenom, SUM(lc.quantite * p.prix_par_personne) AS total
+            FROM utilisateurs u
+            JOIN commandes c ON u.id_utilisateur = c.id_client
+            JOIN lignes_commande lc ON lc.id_commande = c.id_commande
+            JOIN plats p ON p.id_plat = lc.id_plat
+            WHERE u.est_client = true
+            GROUP BY u.id_utilisateur
+            ORDER BY total DESC";
+            }
+
+            using var conn = ConnexionDB.GetConnection();
+            using var cmd = new MySqlCommand(sql, conn);
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                if (tri == "Montant des achats cumulés")
+                {
+                    string nom = reader.GetString("nom");
+                    string prenom = reader.GetString("prenom");
+                    decimal total = reader.GetDecimal("total");
+                    lstResultats.Items.Add($"{prenom} {nom} - {total} €");
+                }
+                else if (tri == "Rue")
+                {
+                    string nom = reader.GetString("nom");
+                    string prenom = reader.GetString("prenom");
+                    string rue = reader.GetString("adresse");
+                    lstResultats.Items.Add($"{prenom} {nom} - {rue}");
+                }
+                else
+                {
+                    string nom = reader.GetString("nom");
+                    string prenom = reader.GetString("prenom");
+                    lstResultats.Items.Add($"{prenom} {nom}");
+                }
+            }
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
 
         }
     }
