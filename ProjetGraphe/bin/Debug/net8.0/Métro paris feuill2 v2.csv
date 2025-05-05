@@ -172,13 +172,13 @@ Station Id;Station;Précédent;Suivant;Temps entre 2 stations;Temps de Changement
 171;Maison Blanche;166;;;
 172;Louis Blanc;;173;;
 173;Jaurès;172;172;;
-174;Bolivar;171;171;;
-175;Buttes Chaumont;170;170;;
-176;Botzaris;169;169;;
+174;Bolivar;173;175;;
+175;Buttes Chaumont;174;176;;
+176;Botzaris;179;175;;
 177;Place des Fêtes;176;178;;
 178;Pré-Saint-Gervais;177;179;;
 179;Danube;178;180;;
-180;Botzaris;179;175;;
+180;Botzaris;177;175;;
 181;Balard;;182;;
 182;Lourmel;181;183;;
 183;Boucicaut;182;184;;

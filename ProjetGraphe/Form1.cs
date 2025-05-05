@@ -86,5 +86,10 @@ namespace ProjetGraphe
                 g.DrawString(label, new Font("Segoe UI", 8), Brushes.Black, pos.X + 12, pos.Y - 6);
             }
         }
+
+        private void FormColoration_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

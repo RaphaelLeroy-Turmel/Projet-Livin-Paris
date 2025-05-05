@@ -204,8 +204,8 @@ namespace TEST_Projet_Livin_Paris
             {
                 Console.WriteLine($"Une erreur inattendue s'est produite. Détails : {ex.Message}");
             }
-        }
-        public bool VérifConcordanceId()
+        }/// méthode qui lit le fichier arcs et fais les liens entre stations
+        public bool VérifConcordanceId()/// vérufié la bonne concordnace entre l'id du noeud et de la staion qui lui correspond
         {
             foreach (Noeud<T> noeud in DictionnaireDeNoeuds.Values)
             { /// vérifie que les Indices du noeud et de sa stations sont les memes
@@ -224,7 +224,7 @@ namespace TEST_Projet_Livin_Paris
             return true;
 
         }
-        public void SupprimeDoublons()
+        public void SupprimeDoublons()///Supprime les doublons de station
         {
             List<int> idsSupprimes = new List<int>(); /// Liste pour garder une trace des Id des noeuds à supprimer
             foreach (Noeud<T> noeudA in DictionnaireDeNoeuds.Values)
@@ -257,72 +257,7 @@ namespace TEST_Projet_Livin_Paris
                 DictionnaireDeNoeuds.Remove(id);
             }
         }
-        public void SupprimeDoublon(Dictionary<int, Noeud<T>> DictionnaireDeNoeud)
-        {
-            /// Groupement des stations par nom
-            var groupes = DictionnaireDeNoeud.Values
-                .GroupBy(n => n.GetLibStation())
-                .Where(g => g.Count() > 1);
-
-            foreach (var groupe in groupes)
-            {
-                /// Choix d'un nœud principal à garder
-                var noeudPrincipal = groupe.First();
-                var noeudsADefusionner = groupe.Skip(1).ToList();
-
-                foreach (var doublon in noeudsADefusionner)
-                {
-                    /// Fusion des lignes (si Station)
-                    if (doublon is Station stationDoublon)
-                    {
-                        foreach (var ligne in stationDoublon.ListeLibelleLigne)
-                            noeudPrincipal.AddLigne(ligne);
-                    }
-
-                    /// Rediriger les arcs sortants du doublon vers le noeud principal
-                    foreach (var arcSortant in doublon.ArcsSortants)
-                    {
-                        var nouveauLien = new Lien<T>(noeudPrincipal, arcSortant.NoeudArrivée, arcSortant.Poids);
-                        if (!ExisteDeja(noeudPrincipal.ArcsSortants, nouveauLien))
-                            noeudPrincipal.ArcsSortants.Add(nouveauLien);
-                    }
-
-                    /// Rediriger les arcs entrants du doublon vers le noeud principal
-                    foreach (var arcEntrant in doublon.ArcsEntrants)
-                    {
-                        var nouveauLien = new Lien<T>(arcEntrant.NoeudDépart, noeudPrincipal, arcEntrant.Poids);
-                        if (!ExisteDeja(noeudPrincipal.ArcsEntrants, nouveauLien))
-                            noeudPrincipal.ArcsEntrants.Add(nouveauLien);
-                    }
-
-                    /// Mise à jour des arcs dans les autres noeuds
-                    foreach (var n in DictionnaireDeNoeud.Values)
-                    {
-                        /// Corriger les arcs sortants
-                        for (int i = 0; i < n.ArcsSortants.Count; i++)
-                        {
-                            if (n.ArcsSortants[i].NoeudArrivée.Id == doublon.Id)
-                            {
-                                n.ArcsSortants[i].NoeudArrivée = noeudPrincipal;
-                            }
-                        }
-
-                        /// Corriger les arcs entrants
-                        for (int i = 0; i < n.ArcsEntrants.Count; i++)
-                        {
-                            if (n.ArcsEntrants[i].NoeudDépart.Id == doublon.Id)
-                            {
-                                n.ArcsEntrants[i].NoeudDépart = noeudPrincipal;
-                            }
-                        }
-                    }
-
-                    /// Suppression du doublon du dictionnaire
-                    ///Console.WriteLine($"Suppression de la station en double : {doublon.GetLibStation()} (id {doublon.Id})");
-                    DictionnaireDeNoeud.Remove(doublon.Id);
-                }
-            }
-        }
+        
         /// Méthode d'aide pour éviter d'ajouter deux fois le même arc (même départ, arrivée, poids)
         private bool ExisteDeja(List<Lien<T>> liste, Lien<T> nouveau)
         {
@@ -440,7 +375,7 @@ namespace TEST_Projet_Livin_Paris
                 }
             }
         }
-        public void ListerLesLiensDeNoeud(string NomDeNoeud)
+        public void ListerLesLiensDeNoeud(string NomDeNoeud)///fonctino qui permet d'afficher tous les liens du graphe dans la console
         {
             foreach (Noeud<T> station in DictionnaireDeNoeuds.Values)
             {
@@ -465,7 +400,7 @@ namespace TEST_Projet_Livin_Paris
             }
         }
 
-        public List<Station> PCC(string LibelleStart, string LibelleEnd)
+        public List<Station> PCC(string LibelleStart, string LibelleEnd)///Fonction du plus court chemin
         {
             /// Trouver les IDs des stations à partir des libellés
             Dictionary<int, Noeud<T>> DictionnaireDeNoeud = new Dictionary<int, Noeud<T>>(DictionnaireDeNoeuds);
@@ -664,7 +599,7 @@ namespace TEST_Projet_Livin_Paris
 
 
             return -1;
-        }
+        }/// cherche une ligne commune aux 2 stations sinon retourne -1
 
         /// Méthode pour vérifier si une station existe déjà dans le graphe
         private Noeud<T> ContientStation(List<Noeud<T>> liste, string libelle)
@@ -678,6 +613,72 @@ namespace TEST_Projet_Livin_Paris
             }
             return null;
         }
+        public void SupprimeDoublon(Dictionary<int, Noeud<T>> DictionnaireDeNoeud)
+        {
+            /// Groupement des stations par nom
+            var groupes = DictionnaireDeNoeud.Values
+                .GroupBy(n => n.GetLibStation())
+                .Where(g => g.Count() > 1);
+
+            foreach (var groupe in groupes)
+            {
+                /// Choix d'un nœud principal à garder
+                var noeudPrincipal = groupe.First();
+                var noeudsADefusionner = groupe.Skip(1).ToList();
+
+                foreach (var doublon in noeudsADefusionner)
+                {
+                    /// Fusion des lignes (si Station)
+                    if (doublon is Station stationDoublon)
+                    {
+                        foreach (var ligne in stationDoublon.ListeLibelleLigne)
+                            noeudPrincipal.AddLigne(ligne);
+                    }
+
+                    /// Rediriger les arcs sortants du doublon vers le noeud principal
+                    foreach (var arcSortant in doublon.ArcsSortants)
+                    {
+                        var nouveauLien = new Lien<T>(noeudPrincipal, arcSortant.NoeudArrivée, arcSortant.Poids);
+                        if (!ExisteDeja(noeudPrincipal.ArcsSortants, nouveauLien))
+                            noeudPrincipal.ArcsSortants.Add(nouveauLien);
+                    }
+
+                    /// Rediriger les arcs entrants du doublon vers le noeud principal
+                    foreach (var arcEntrant in doublon.ArcsEntrants)
+                    {
+                        var nouveauLien = new Lien<T>(arcEntrant.NoeudDépart, noeudPrincipal, arcEntrant.Poids);
+                        if (!ExisteDeja(noeudPrincipal.ArcsEntrants, nouveauLien))
+                            noeudPrincipal.ArcsEntrants.Add(nouveauLien);
+                    }
+
+                    /// Mise à jour des arcs dans les autres noeuds
+                    foreach (var n in DictionnaireDeNoeud.Values)
+                    {
+                        /// Corriger les arcs sortants
+                        for (int i = 0; i < n.ArcsSortants.Count; i++)
+                        {
+                            if (n.ArcsSortants[i].NoeudArrivée.Id == doublon.Id)
+                            {
+                                n.ArcsSortants[i].NoeudArrivée = noeudPrincipal;
+                            }
+                        }
+
+                        /// Corriger les arcs entrants
+                        for (int i = 0; i < n.ArcsEntrants.Count; i++)
+                        {
+                            if (n.ArcsEntrants[i].NoeudDépart.Id == doublon.Id)
+                            {
+                                n.ArcsEntrants[i].NoeudDépart = noeudPrincipal;
+                            }
+                        }
+                    }
+
+                    /// Suppression du doublon du dictionnaire
+                    ///Console.WriteLine($"Suppression de la station en double : {doublon.GetLibStation()} (id {doublon.Id})");
+                    DictionnaireDeNoeud.Remove(doublon.Id);
+                }
+            }
+        }///Supprime les doublons
 
         public double CalculDistance(double longitude1, double latitude1, double longitude2, double latitude2)
         {
@@ -700,6 +701,7 @@ namespace TEST_Projet_Livin_Paris
 
             return distance; /// en kilomètres
         }
+
 
         public int CalculTempsEntre2Stations(Noeud<T> A, Noeud<T> B)
         {

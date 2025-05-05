@@ -11,11 +11,9 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
         static void Main(string[] args)
         {
 
-
+            /// utile uniquement pour l'affichage en console
             string file1 = "MetroParisUTF8 feuille 1.txt";
-            string file2 = "Métro paris UTF8 feuille2 v2.txt";
-            string file3 = "PetiteFeuille1.txt";
-            string file4 = "PetiteFeuille2.txt";
+            string file2 = "Métro paris UTF8 feuille2 v2.txt";            
             Graphe<Station> PlanMétro = new Graphe<Station>(file1, file2);
             List<Station> ListeDeStation = new List<Station>();
             foreach (Noeud<Station> Noeud in PlanMétro.DictionnaireDeNoeuds.Values)
@@ -32,8 +30,9 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             PlanMétro.DictionnaireDeNoeuds.TryGetValue(1, out var node);
             ///GraphViewModel<Station> Graphe = new GraphViewModel<Station>(ListeDeStation, PlanMétro.MatriceAdjacence, PlanMétro,CheminStation);
 
-
+            ///ici l'affichage sous sa prmeière version en console  
             ///new Affichage();
+            /// ci dessou l'affichage en verison finale (Windows forms)
             Application.Run(new FormConnexion());
 
         }
