@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ProjetGraphe/Station.cs
+/ProjetGraphe/obj/project.assets.json
+/ProjetGraphe/obj/project.nuget.cache
+/ProjetGraphe/obj/ProjetGraphe.csproj.nuget.g.props
+/ProjetGraphe/obj/ProjetGraphe.csproj.nuget.dgspec.json

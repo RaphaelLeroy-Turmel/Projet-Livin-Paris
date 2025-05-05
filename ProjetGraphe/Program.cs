@@ -7,7 +7,7 @@ using TEST_Projet_Livin_Paris;
 namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
 {
     public class Program
-    {// test
+    {
         static void Main(string[] args)
         {
 
@@ -24,18 +24,16 @@ namespace ProjetGraphe///Raphael_LEROY_TURMEL_Thomas_LIOTIER_Loan_LU_CHI_VANG
             }
             string LibelleStart = "Porte Maillot";
             string LibelleEnd = "Saint-Fargeau";
-            List<int> CheminStation = new List<int>();
+            List<string> CheminStation = new List<string>();
             foreach(Station station in PlanMétro.PCC(LibelleStart, LibelleEnd))
             {
-                CheminStation.Add(station.Id);
+                CheminStation.Add(station.LibelleStation);
             }
             PlanMétro.DictionnaireDeNoeuds.TryGetValue(1, out var node);
-            //GraphViewModel<Station> Graphe = new GraphViewModel<Station>(ListeDeStation, PlanMétro.MatriceAdjacence, PlanMétro,CheminStation);
+            ///GraphViewModel<Station> Graphe = new GraphViewModel<Station>(ListeDeStation, PlanMétro.MatriceAdjacence, PlanMétro,CheminStation);
 
 
-
-
-            //new Affichage();
+            ///new Affichage();
             Application.Run(new FormConnexion());
 
         }

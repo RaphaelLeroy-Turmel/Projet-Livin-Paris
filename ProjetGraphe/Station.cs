@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TEST_Projet_Livin_Paris
-{
+{///Raphaël_LEROY TURMEL Thomas LIOTIER Loan LU-CHI-VANG TD K
     internal class Station
     {
         public int Id;
@@ -18,7 +18,7 @@ namespace TEST_Projet_Livin_Paris
         {
             Id = id;
             LibelleStation = libelleStation;
-            ListeLibelleLigne = libelleLigne;
+            ListeLibelleLigne = new List<float>(libelleLigne);
             Longitude = longitude;
             Latitude = latitude;
         }
@@ -28,12 +28,18 @@ namespace TEST_Projet_Livin_Paris
             LibelleStation = libelleStation;
             if (ListeLibelleLigne == null)
             {
-                //Console.WriteLine("Liste de ligne nulle : création d'une station");
+                
                 ListeLibelleLigne = new List<float>();
                 ListeLibelleLigne.Add(libelleLigne);
             }
             Longitude = longitude;
             Latitude = latitude;
+        }
+        public void AddLigne(float IdLigne)
+        {
+            if (!ListeLibelleLigne.Contains(IdLigne)) { this.ListeLibelleLigne.Add(IdLigne); }
+            else { Console.WriteLine("Ajout impossible la ligne est deja présente dans la liste !"); }
+
         }
 
         public int LigneCommune(Station stationB)
