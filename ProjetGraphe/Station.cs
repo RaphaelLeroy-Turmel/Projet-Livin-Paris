@@ -28,7 +28,7 @@ namespace TEST_Projet_Livin_Paris
             LibelleStation = libelleStation;
             if (ListeLibelleLigne == null)
             {
-                //Console.WriteLine("Liste de ligne nulle : création d'une station");
+                
                 ListeLibelleLigne = new List<float>();
                 ListeLibelleLigne.Add(libelleLigne);
             }

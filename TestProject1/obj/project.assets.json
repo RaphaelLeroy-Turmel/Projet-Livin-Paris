@@ -3490,19 +3490,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kisho\\.nuget\\packages\\": {}
+    "C:\\Users\\rarap\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\TestProject1.csproj",
+      "projectUniqueName": "C:\\Users\\rarap\\Source\\Repos\\Projet-Livin-Paris\\TestProject1\\TestProject1.csproj",
       "projectName": "TestProject1",
-      "projectPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\TestProject1.csproj",
-      "packagesPath": "C:\\Users\\kisho\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\TestProject1\\obj\\",
+      "projectPath": "C:\\Users\\rarap\\Source\\Repos\\Projet-Livin-Paris\\TestProject1\\TestProject1.csproj",
+      "packagesPath": "C:\\Users\\rarap\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\rarap\\Source\\Repos\\Projet-Livin-Paris\\TestProject1\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\kisho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\rarap\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3510,15 +3515,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0-windows7.0": {
           "targetAlias": "net8.0-windows",
           "projectReferences": {
-            "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\ProjetGraphe.csproj": {
-              "projectPath": "C:\\Users\\kisho\\Desktop\\Linvinparis\\ProjetGraphe\\ProjetGraphe.csproj"
+            "C:\\Users\\rarap\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj": {
+              "projectPath": "C:\\Users\\rarap\\Source\\Repos\\Projet-Livin-Paris\\ProjetGraphe\\ProjetGraphe.csproj"
             }
           }
         }
@@ -3532,7 +3536,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0-windows7.0": {
@@ -3563,7 +3568,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
@@ -3572,7 +3577,7 @@
       "code": "NU1602",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "GraphSharp 1.1.0 ne fournit pas de limite inférieure inclusive pour la dépendance WPFExtensions. Une meilleure correspondance approximative de WPFExtensions 1.0.0 a été résolue.",
+      "message": "GraphSharp 1.1.0 ne fournit pas de limite inférieure inclusive pour la dépendance WPFExtensions. WPFExtensions 1.0.0 a été résolu à la place",
       "libraryId": "WPFExtensions",
       "targetGraphs": [
         "net8.0-windows7.0"
